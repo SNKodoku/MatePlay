@@ -5,6 +5,9 @@
   <title>Actividad: Sistemas de Ecuaciones | MatePlay</title>
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <link rel="stylesheet" href="../../css/style.css">
+
+  <!-- ⭐ SISTEMA DE LOGROS -->
+  <script src="../../js/logros.js"></script>
 </head>
 
 <body>
@@ -28,8 +31,7 @@
   <section>
     <h1 class="section-title">Sistemas de Ecuaciones</h1>
     <p class="section-subtitle">
-      Observa las dos rectas y elige el punto donde se intersectan.  
-      Actividad avanzada con representación gráfica.
+      Observa las dos rectas y elige el punto donde se intersectan.
     </p>
   </section>
 
@@ -41,8 +43,7 @@
         <span class="game-level-label">Nivel 3 · Álgebra Avanzada</span>
 
         <canvas id="sisCanvas" width="350" height="300"
-                style="background:#f9fafb;border-radius:12px;margin-bottom:1rem;">
-        </canvas>
+                style="background:#f9fafb;border-radius:12px;margin-bottom:1rem;"></canvas>
 
         <p id="sisPregunta" class="game-question">
           ¿Cuál es el punto de intersección?
@@ -60,10 +61,12 @@
       <!-- DERECHA -->
       <aside class="game-side">
         <p class="game-side-title">¿Cómo se resuelve?</p>
-        <p>El punto donde se cruzan ambas rectas es la solución.</p>
+        <p>Busca el punto donde ambas rectas se cruzan en el plano.</p>
         <hr>
-        <p>Si y = m₁x + b₁ y y = m₂x + b₂,</p>
-        <p><strong>m₁x + b₁ = m₂x + b₂</strong></p>
+        <p>Algebraicamente:</p>
+        <p>Si y = m1x + b1 y y = m2x + b2,</p>
+        <p>entonces:</p>
+        <p><strong>m1x + b1 = m2x + b2</strong></p>
       </aside>
 
     </div>
@@ -78,13 +81,10 @@
 </main>
 
 <footer>
-  MatePlay · Actividad de Sistemas · 2025
+  MatePlay · Actividad de Sistemas de Ecuaciones · 2025
 </footer>
 
-<!-- ⭐ SISTEMA DE LOGROS -->
-<script src="../../js/logros.js"></script>
-
-<!-- ⭐ POPUP DE ESTRELLA -->
+<!-- ⭐ POPUP ESTRELLA -->
 <script>
   function popupEstrella() {
     let pop = document.createElement("div");
@@ -110,7 +110,7 @@
   }
 </script>
 
-<!-- ⭐ SCRIPT PRINCIPAL -->
+<!-- SCRIPT PRINCIPAL -->
 <script>
   const canvas = document.getElementById("sisCanvas");
   const ctx = canvas.getContext("2d");
@@ -127,6 +127,7 @@
     let b1 = Math.floor(Math.random() * 10) - 5;
     let b2 = Math.floor(Math.random() * 10) - 5;
 
+    // Intersección algebraica
     let x = (b2 - b1) / (m1 - m2);
     let y = m1 * x + b1;
 
@@ -139,16 +140,13 @@
     dibujarRecta(m1, b1, "#ef4444");
     dibujarRecta(m2, b2, "#3b82f6");
 
-    document.getElementById("sisPregunta").textContent =
-      "¿Cuál es el punto de intersección?";
-
     generarOpciones(interseccionCorrecta.x, interseccionCorrecta.y);
 
     document.getElementById("sisResultado").textContent = "";
   }
 
   function dibujarEjes() {
-    ctx.strokeStyle = "#9ca3af";
+    ctx.strokeStyle = "#6b7280";
     ctx.lineWidth = 1;
 
     ctx.beginPath();
@@ -166,28 +164,27 @@
     ctx.strokeStyle = color;
     ctx.lineWidth = 2;
 
+    ctx.beginPath();
     let x1 = -20;
     let y1 = m * x1 + b;
-
     let x2 = 20;
     let y2 = m * x2 + b;
 
-    ctx.beginPath();
     ctx.moveTo(canvas.width/2 + x1 * 10, canvas.height/2 - y1 * 10);
     ctx.lineTo(canvas.width/2 + x2 * 10, canvas.height/2 - y2 * 10);
     ctx.stroke();
   }
 
-  function generarOpciones(xC, yC) {
+  function generarOpciones(xCorrecta, yCorrecta) {
     const cont = document.getElementById("sisOpciones");
     cont.innerHTML = "";
 
     const opciones = new Set();
-    opciones.add(`(${xC}, ${yC})`);
+    opciones.add(`(${xCorrecta}, ${yCorrecta})`);
 
     while (opciones.size < 4) {
-      let xR = xC + Math.floor(Math.random() * 7) - 3;
-      let yR = yC + Math.floor(Math.random() * 7) - 3;
+      let xR = xCorrecta + Math.floor(Math.random() * 7) - 3;
+      let yR = yCorrecta + Math.floor(Math.random() * 7) - 3;
       opciones.add(`(${xR}, ${yR})`);
     }
 
@@ -205,9 +202,7 @@
   function evaluar(opcion) {
     const res = document.getElementById("sisResultado");
 
-    let correcta = `(${interseccionCorrecta.x}, ${interseccionCorrecta.y})`;
-
-    if (opcion === correcta) {
+    if (opcion === `(${interseccionCorrecta.x}, ${interseccionCorrecta.y})`) {
       res.textContent = "¡Correcto! 🎉";
       res.className = "game-result ok";
 

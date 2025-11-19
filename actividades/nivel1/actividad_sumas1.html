@@ -40,9 +40,7 @@
             3 + 4 = ?
           </p>
 
-          <div id="suma-opciones" class="game-options">
-            <!-- se llena por JS -->
-          </div>
+          <div id="suma-opciones" class="game-options"></div>
 
           <p id="suma-resultado" class="game-result"></p>
 
@@ -105,7 +103,7 @@
     let sumaCorrecta = 0;
 
     function nuevaSuma() {
-      let a = Math.floor(Math.random() * 21); 
+      let a = Math.floor(Math.random() * 21);
       let b = Math.floor(Math.random() * 21);
       sumaCorrecta = a + b;
 
@@ -113,8 +111,7 @@
       document.getElementById("suma-resultado").textContent = "";
       document.getElementById("suma-resultado").className = "game-result";
 
-      const opciones = new Set();
-      opciones.add(sumaCorrecta);
+      const opciones = new Set([sumaCorrecta]);
 
       while (opciones.size < 4) {
         let desvio = Math.floor(Math.random() * 11) - 5;
@@ -142,9 +139,9 @@
         texto.textContent = "¡Correcto! 🎉";
         texto.className = "game-result ok";
 
-        // ⭐ SUMAR ESTRELLA SI EL SISTEMA EXISTE
+        // ⭐ LOGRO DE NIVEL 1 · SUMAS
         if (typeof sumarEstrella === "function") {
-          sumarEstrella("nivel1_sumas");
+          sumarEstrella("logro_n1_sumas");
         }
 
         popupEstrella();

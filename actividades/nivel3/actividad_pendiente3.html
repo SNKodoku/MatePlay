@@ -2,9 +2,12 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Actividad: Pendiente entre dos puntos | MatePlay</title>
+  <title>Actividad: Proporciones y Regla de Tres | MatePlay</title>
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <link rel="stylesheet" href="../../css/style.css">
+
+  <!-- ⭐ SISTEMA DE LOGROS GLOBAL -->
+  <script src="../../js/logros.js"></script>
 </head>
 
 <body>
@@ -26,9 +29,9 @@
 <main>
 
   <section>
-    <h1 class="section-title">Pendiente entre dos puntos</h1>
+    <h1 class="section-title">Proporciones y Regla de Tres</h1>
     <p class="section-subtitle">
-      Observa los puntos y la recta. Luego elige la pendiente correcta.
+      Observa las barras y resuelve la proporción.
     </p>
   </section>
 
@@ -37,31 +40,29 @@
 
       <!-- IZQUIERDA -->
       <div>
-        <span class="game-level-label">Nivel 3 · Álgebra y Geometría</span>
+        <span class="game-level-label">Nivel 3 · Proporciones</span>
 
-        <canvas id="pendCanvas" width="350" height="300"
-                style="background:#f9fafb;border-radius:12px;margin-bottom:1rem;">
-        </canvas>
+        <canvas id="propCanvas" width="330" height="260"
+                style="background:#f9fafb;border-radius:12px;margin-bottom:1rem;"></canvas>
 
-        <p id="pendPregunta" class="game-question"></p>
+        <p id="propPregunta" class="game-question"></p>
 
-        <div id="pendOpciones" class="game-options"></div>
+        <div id="propOpciones" class="game-options"></div>
 
-        <p id="pendResultado" class="game-result"></p>
+        <p id="propResultado" class="game-result"></p>
 
-        <button class="btn btn-primary" onclick="nuevaPendiente()">
-          🔄 Nuevo ejercicio
+        <button class="btn btn-primary" onclick="nuevaProporcion()">
+          🔄 Nueva proporción
         </button>
       </div>
 
       <!-- DERECHA -->
       <aside class="game-side">
-        <p class="game-side-title">Fórmula de la pendiente:</p>
-        <p><strong>m = (y₂ − y₁) / (x₂ − x₁)</strong></p>
-        <hr>
-        <p>Si sube hacia la derecha → pendiente positiva.</p>
-        <p>Si baja hacia la derecha → pendiente negativa.</p>
-        <p>Si es horizontal → pendiente = 0.</p>
+        <p class="game-side-title">¿Cómo resolver proporciones?</p>
+        <p><strong>Regla de tres:</strong></p>
+        <p>Si A → B</p>
+        <p>y C → X</p>
+        <p>Entonces X = (B × C) / A</p>
       </aside>
 
     </div>
@@ -76,11 +77,8 @@
 </main>
 
 <footer>
-  MatePlay · Pendiente · 2025
+  MatePlay · Actividad de Proporciones · 2025
 </footer>
-
-<!-- ⭐ SISTEMA DE LOGROS -->
-<script src="../../js/logros.js"></script>
 
 <!-- ⭐ POPUP ESTRELLA -->
 <script>
@@ -108,104 +106,57 @@
   }
 </script>
 
-<!-- ⭐ SCRIPT PRINCIPAL -->
+<!-- SCRIPT PRINCIPAL -->
 <script>
-  const canvas = document.getElementById("pendCanvas");
+  const canvas = document.getElementById("propCanvas");
   const ctx = canvas.getContext("2d");
 
-  let pendienteCorrecta = 0;
+  let resultadoCorrecto = 0;
 
-  function nuevaPendiente() {
+  function nuevaProporcion() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    dibujarEjes();
 
-    // Generar puntos aleatorios
-    let x1 = Math.floor(Math.random() * 9) - 4;
-    let y1 = Math.floor(Math.random() * 9) - 4;
+    const barrasA = Math.floor(Math.random() * 4) + 2;  
+    const barrasC = Math.floor(Math.random() * 4) + 2;  
+    const valorA = Math.floor(Math.random() * 20) + 5;  
 
-    let x2 = Math.floor(Math.random() * 9) - 4;
-    let y2 = Math.floor(Math.random() * 9) - 4;
+    resultadoCorrecto = Math.round((valorA * barrasC) / barrasA);
 
-    while (x1 === x2) x2 = Math.floor(Math.random() * 9) - 4;
+    dibujarBarras(40, 50, barrasA, "#3b82f6");
+    ctx.fillStyle = "#111827";
+    ctx.fillText(`${barrasA} barras = ${valorA}`, 40, 40);
 
-    dibujarPunto(x1, y1, "#ef4444");
-    dibujarPunto(x2, y2, "#3b82f6");
+    dibujarBarras(40, 150, barrasC, "#f97316");
+    ctx.fillStyle = "#111827";
+    ctx.fillText(`${barrasC} barras = ?`, 40, 140);
 
-    dibujarRectaPorPuntos(x1, y1, x2, y2);
+    document.getElementById("propPregunta").textContent =
+      `Si ${barrasA} barras valen ${valorA}, ¿cuánto valen ${barrasC} barras?`;
 
-    pendienteCorrecta = (y2 - y1) / (x2 - x1);
-    pendienteCorrecta = Math.round(pendienteCorrecta * 10) / 10;
-
-    document.getElementById("pendPregunta").textContent =
-      `Puntos: (${x1}, ${y1}) y (${x2}, ${y2}). ¿Cuál es la pendiente?`;
-
-    generarOpcionesPend(pendienteCorrecta);
-
-    document.getElementById("pendResultado").textContent = "";
+    generarOpciones(resultadoCorrecto);
+    document.getElementById("propResultado").textContent = "";
   }
 
-  /* === DIBUJOS === */
-
-  function dibujarEjes() {
-    const W = canvas.width, H = canvas.height;
-
-    ctx.strokeStyle = "#9ca3af";
-    ctx.lineWidth = 1;
-
-    ctx.beginPath();
-    ctx.moveTo(0, H/2);
-    ctx.lineTo(W, H/2);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(W/2, 0);
-    ctx.lineTo(W/2, H);
-    ctx.stroke();
+  function dibujarBarras(x, y, cantidad, color) {
+    for (let i = 0; i < cantidad; i++) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x + i * 25, y, 20, 50);
+      ctx.strokeStyle = "#1f2937";
+      ctx.strokeRect(x + i * 25, y, 20, 50);
+    }
   }
 
-  function dibujarPunto(x, y, color) {
-    const px = canvas.width/2 + x * 20;
-    const py = canvas.height/2 - y * 20;
-
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.arc(px, py, 5, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  function dibujarRectaPorPuntos(x1, y1, x2, y2) {
-    const W = canvas.width, H = canvas.height;
-
-    let m = (y2 - y1) / (x2 - x1);
-    let b = y1 - m * x1;
-
-    let xx1 = -10;
-    let yy1 = m * xx1 + b;
-
-    let xx2 = 10;
-    let yy2 = m * xx2 + b;
-
-    ctx.strokeStyle = "#2563eb";
-    ctx.lineWidth = 2;
-
-    ctx.beginPath();
-    ctx.moveTo(W/2 + xx1*20, H/2 - yy1*20);
-    ctx.lineTo(W/2 + xx2*20, H/2 - yy2*20);
-    ctx.stroke();
-  }
-
-  /* === OPCIONES Y EVALUACIÓN === */
-
-  function generarOpcionesPend(correcta) {
-    const cont = document.getElementById("pendOpciones");
+  function generarOpciones(correcta) {
+    const cont = document.getElementById("propOpciones");
     cont.innerHTML = "";
 
-    const opciones = new Set([correcta]);
+    const opciones = new Set();
+    opciones.add(correcta);
 
     while (opciones.size < 4) {
-      let desvio = (Math.floor(Math.random() * 11) - 5) / 2;
-      let posible = Math.round((correcta + desvio) * 10) / 10;
-      opciones.add(posible);
+      let desvio = Math.floor(Math.random() * 15) - 7;
+      let posible = correcta + desvio;
+      if (posible > 0) opciones.add(posible);
     }
 
     const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
@@ -214,30 +165,31 @@
       const btn = document.createElement("button");
       btn.className = "game-option";
       btn.textContent = op;
-      btn.onclick = () => evaluarPend(op);
+      btn.onclick = () => evaluar(op);
       cont.appendChild(btn);
     });
   }
 
-  function evaluarPend(valor) {
-    const res = document.getElementById("pendResultado");
+  function evaluar(num) {
+    const res = document.getElementById("propResultado");
 
-    if (valor === pendienteCorrecta) {
+    if (num === resultadoCorrecto) {
       res.textContent = "¡Correcto! 🎉";
       res.className = "game-result ok";
 
       if (typeof sumarEstrella === "function") {
-        sumarEstrella("nivel3_pendiente");
+        sumarEstrella("nivel3_proporciones");
       }
 
       popupEstrella();
+
     } else {
       res.textContent = "Incorrecto ❌";
       res.className = "game-result bad";
     }
   }
 
-  nuevaPendiente();
+  nuevaProporcion();
 </script>
 
 </body>

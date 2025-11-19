@@ -36,16 +36,19 @@
   <section>
     <div class="game-container">
 
-      <!-- IZQUIERDA -->
+      <!-- LADO IZQUIERDO -->
       <div>
         <span class="game-level-label">Nivel 3 · Proporciones</span>
 
+        <!-- CANVAS -->
         <canvas id="propCanvas" width="330" height="260"
                 style="background:#f9fafb;border-radius:12px;margin-bottom:1rem;">
         </canvas>
 
+        <!-- Pregunta -->
         <p id="propPregunta" class="game-question"></p>
 
+        <!-- Opciones -->
         <div id="propOpciones" class="game-options"></div>
 
         <p id="propResultado" class="game-result"></p>
@@ -55,7 +58,7 @@
         </button>
       </div>
 
-      <!-- DERECHA -->
+      <!-- LADO DERECHO -->
       <aside class="game-side">
         <p class="game-side-title">¿Cómo resolver proporciones?</p>
         <p><strong>Regla de tres:</strong></p>
@@ -86,7 +89,7 @@
   MatePlay · Actividad de Proporciones · 2025
 </footer>
 
-<!-- ⭐ SISTEMA DE LOGROS -->
+<!-- ⭐ SISTEMA DE LOGROS GLOBAL -->
 <script src="../../js/logros.js"></script>
 
 <!-- ⭐ POPUP DE ESTRELLA -->
@@ -115,7 +118,7 @@
   }
 </script>
 
-<!-- ⭐ SCRIPT PRINCIPAL -->
+<!-- SCRIPT PRINCIPAL DE LA ACTIVIDAD -->
 <script>
   const canvas = document.getElementById("propCanvas");
   const ctx = canvas.getContext("2d");
@@ -125,21 +128,26 @@
   function nuevaProporcion() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const barrasA = Math.floor(Math.random() * 4) + 2;
-    const barrasC = Math.floor(Math.random() * 4) + 2;
+    // Barras representando cantidades
+    const barrasA = Math.floor(Math.random() * 4) + 2;  // 2–5
+    const barrasC = Math.floor(Math.random() * 4) + 2;  // 2–5
 
-    const valorA = Math.floor(Math.random() * 20) + 5;
+    const valorA = Math.floor(Math.random() * 20) + 5;  // 5–25
 
+    // Regla de tres
     resultadoCorrecto = Math.round((valorA * barrasC) / barrasA);
 
+    // Dibujo de barras A
     dibujarBarras(40, 50, barrasA, "#3b82f6");
     ctx.fillStyle = "#111827";
     ctx.fillText(`${barrasA} barras = ${valorA}`, 40, 40);
 
+    // Dibujo de barras C (desconocido)
     dibujarBarras(40, 150, barrasC, "#f97316");
     ctx.fillStyle = "#111827";
     ctx.fillText(`${barrasC} barras = ?`, 40, 140);
 
+    // Texto de pregunta
     document.getElementById("propPregunta").textContent =
       `Si ${barrasA} barras valen ${valorA}, ¿cuánto valen ${barrasC} barras?`;
 
@@ -147,6 +155,7 @@
     document.getElementById("propResultado").textContent = "";
   }
 
+  // Dibujar barras rectangulares
   function dibujarBarras(x, y, cantidad, color) {
     for (let i = 0; i < cantidad; i++) {
       ctx.fillStyle = color;
@@ -160,7 +169,8 @@
     const cont = document.getElementById("propOpciones");
     cont.innerHTML = "";
 
-    const opciones = new Set([correcta]);
+    const opciones = new Set();
+    opciones.add(correcta);
 
     while (opciones.size < 4) {
       let desvio = Math.floor(Math.random() * 15) - 7;
@@ -186,6 +196,7 @@
       res.textContent = "¡Correcto! 🎉";
       res.className = "game-result ok";
 
+      // ⭐ SUMAR ESTRELLA GLOBAL PARA ESTE LOGRO
       if (typeof sumarEstrella === "function") {
         sumarEstrella("nivel3_proporciones");
       }

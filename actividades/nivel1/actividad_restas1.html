@@ -35,17 +35,14 @@
     <!-- ACTIVIDAD -->
     <section>
       <div class="game-container">
-        <!-- Columna izquierda → juego -->
+
+        <!-- IZQUIERDA -->
         <div>
           <span class="game-level-label">Nivel 1 · Restas</span>
 
-          <p id="resta-pregunta" class="game-question">
-            10 - 3 = ?
-          </p>
+          <p id="resta-pregunta" class="game-question">10 - 3 = ?</p>
 
-          <div id="resta-opciones" class="game-options">
-            <!-- Se llena por JS -->
-          </div>
+          <div id="resta-opciones" class="game-options"></div>
 
           <p id="resta-resultado" class="game-result"></p>
 
@@ -54,14 +51,14 @@
           </button>
         </div>
 
-        <!-- Columna derecha → instructivo -->
+        <!-- DERECHA -->
         <aside class="game-side">
           <p class="game-side-title">Instrucciones</p>
-          <p>Observa el ejercicio que aparece arriba.</p>
-          <p>Elige una de las respuestas.</p>
-          <p>Si es incorrecta, vuelve a intentar hasta que aciertes.</p>
-          <p>¡Puedes usar el pizarrón virtual del menú para ayudarte!</p>
+          <p>Observa la resta mostrada arriba.</p>
+          <p>Selecciona la respuesta correcta.</p>
+          <p>Si fallas, inténtalo otra vez hasta lograrlo.</p>
         </aside>
+
       </div>
     </section>
 
@@ -119,14 +116,14 @@
       }
 
       restaCorrecta = a - b;
+
       document.getElementById("resta-pregunta").textContent = `${a} - ${b} = ?`;
 
       const resultadoTexto = document.getElementById("resta-resultado");
       resultadoTexto.textContent = "";
       resultadoTexto.className = "game-result";
 
-      const opciones = new Set();
-      opciones.add(restaCorrecta);
+      const opciones = new Set([restaCorrecta]);
 
       while (opciones.size < 4) {
         let desvio = Math.floor(Math.random() * 11) - 5;
@@ -135,6 +132,7 @@
       }
 
       const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
+
       const contenedor = document.getElementById("resta-opciones");
       contenedor.innerHTML = "";
 
@@ -154,9 +152,9 @@
         texto.textContent = "¡Correcto! 🎉";
         texto.className = "game-result ok";
 
-        // ⭐ SUMAR ESTRELLA SI EXISTE EL SISTEMA
+        // ⭐ LOGRO DE NIVEL 1 · RESTAS
         if (typeof sumarEstrella === "function") {
-          sumarEstrella("nivel1_restas");
+          sumarEstrella("logro_n1_restas");
         }
 
         popupEstrella();

@@ -2,35 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>MatePlay - Logros ⭐</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logros y Progreso | MatePlay</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
-
-  <style>
-    .logros-container {
-      padding: 2rem;
-      text-align: center;
-    }
-    .stars-display {
-      font-size: 4rem;
-      margin: 1rem 0;
-      color: #facc15;
-      text-shadow: 0 0 10px #fbbf24;
-    }
-    .logro-card {
-      background: white;
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      margin: 1rem auto;
-      max-width: 500px;
-    }
-    .logro-title {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #4f46e5;
-    }
-  </style>
 </head>
 
 <body>
@@ -46,40 +20,108 @@
       <a href="nivel1.html">Nivel 1</a>
       <a href="nivel2.html">Nivel 2</a>
       <a href="nivel3.html">Nivel 3</a>
-      <a class="active" href="logros.html">Logros ⭐</a>
     </div>
   </nav>
 </header>
 
 <main>
-  <div class="logros-container">
-    <h1 class="section-title">Tus logros en MatePlay</h1>
-    <p class="section-subtitle">Las estrellas representan tu progreso y esfuerzo.</p>
 
-    <div id="totalStars" class="stars-display">⭐ 0</div>
+  <section>
+    <h1 class="section-title">Logros y Progreso</h1>
+    <p class="section-subtitle">
+      Aquí puedes ver cuántas actividades has completado y cuántas estrellas llevas.
+    </p>
+  </section>
 
-    <div class="logro-card">
-      <p class="logro-title">⭐ Primer paso</p>
-      <p>Obtén tu primera estrella resolviendo una actividad.</p>
-    </div>
+  <!-- CONTENEDOR GENERAL -->
+  <section id="logrosContainer" class="levels-grid"></section>
 
-    <div class="logro-card">
-      <p class="logro-title">⭐⭐ Matemático principiante</p>
-      <p>Gana más de 5 estrellas realizando ejercicios.</p>
-    </div>
+  <!-- MENSAJE FINAL -->
+  <section id="mensajeFinal" style="text-align:center;margin-top:2rem;display:none;">
+    <h2 style="color:#10b981;font-size:2rem;">¡Felicidades! 🎉</h2>
+    <p>Has completado todos los logros de MatePlay.</p>
+  </section>
 
-    <div class="logro-card">
-      <p class="logro-title">⭐⭐⭐ Maestro en progreso</p>
-      <p>Consigue 10 estrellas y desbloquea tu camino en los niveles.</p>
-    </div>
+  <!-- BOTÓN REINICIAR -->
+  <section style="text-align:center;margin-top:2rem;">
+    <button class="btn btn-secondary" onclick="reiniciarLogros()">
+      Reiniciar progreso
+    </button>
+  </section>
 
-  </div>
 </main>
 
 <footer>
-  MatePlay · Logros · 2025
+  MatePlay · Sistema de Logros · 2025
 </footer>
 
 <script src="js/logros.js"></script>
+
+<script>
+  // ==============================
+  // CARGA DE LOGROS
+  // ==============================
+
+  const logrosContainer = document.getElementById("logrosContainer");
+
+  // Lista oficial de logros que van a aparecer en esta página
+  const listaLogros = {
+    nivel1_sumas:        "Nivel 1 · Sumas",
+    nivel1_restas:       "Nivel 1 · Restas",
+    nivel1_problemas:    "Nivel 1 · Problemas",
+    
+    nivel2_fracciones:   "Nivel 2 · Fracciones",
+    nivel2_multiplicaciones: "Nivel 2 · Multiplicaciones",
+    nivel2_porcentajes:  "Nivel 2 · Porcentajes",
+    nivel2_divisiones:   "Nivel 2 · Divisiones",
+
+    nivel3_ecuaciones:   "Nivel 3 · Ecuaciones",
+    nivel3_ecuaciones2:  "Nivel 3 · Ecuaciones Avanzadas",
+    nivel3_funciones:    "Nivel 3 · Funciones Lineales",
+    nivel3_geometria:    "Nivel 3 · Geometría",
+    nivel3_pendientes:   "Nivel 3 · Pendiente",
+    nivel3_proporciones: "Nivel 3 · Proporciones",
+    nivel3_sistemas:     "Nivel 3 · Sistemas"
+  };
+
+  function cargarLogros() {
+    logrosContainer.innerHTML = "";
+
+    let completados = 0;
+    const total = Object.keys(listaLogros).length;
+
+    for (let clave in listaLogros) {
+      const nombre = listaLogros[clave];
+      const estrellas = leerEstrellas(clave); // función de logros.js
+
+      if (estrellas > 0) completados++;
+
+      // Tarjeta visual
+      logrosContainer.innerHTML += `
+        <div class="level-card" style="text-align:center;">
+          <h3>${nombre}</h3>
+          <p style="font-size:1.4rem;margin:0.5rem 0;">${"⭐".repeat(estrellas)}</p>
+          <p>${estrellas > 0 ? "Completado ✔" : "Sin completar ❌"}</p>
+        </div>
+      `;
+    }
+
+    if (completados === total) {
+      document.getElementById("mensajeFinal").style.display = "block";
+    }
+  }
+
+  // Reiniciar todo
+  function reiniciarLogros() {
+    if (confirm("¿Quieres borrar todo tu progreso?")) {
+      localStorage.clear();
+      cargarLogros();
+      document.getElementById("mensajeFinal").style.display = "none";
+    }
+  }
+
+  cargarLogros();
+</script>
+
 </body>
 </html>

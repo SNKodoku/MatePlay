@@ -80,7 +80,7 @@
   MatePlay · Actividad de Problemas Algebraicos · 2025
 </footer>
 
-<!-- ⭐ SISTEMA DE LOGROS -->
+<!-- ⭐ SISTEMA DE LOGROS GLOBAL -->
 <script src="../../js/logros.js"></script>
 
 <!-- ⭐ POPUP -->
@@ -186,6 +186,7 @@
       res.textContent = "¡Correcto! 🎉";
       res.className = "game-result ok";
 
+      // ⭐ ESTRELLA DE ESTA ACTIVIDAD
       if (typeof sumarEstrella === "function") {
         sumarEstrella("nivel3_problemasAlgebra");
       }

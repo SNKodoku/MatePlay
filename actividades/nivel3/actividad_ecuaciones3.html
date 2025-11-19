@@ -5,6 +5,9 @@
   <title>Actividad: Ecuaciones de 1er Grado | MatePlay</title>
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <link rel="stylesheet" href="../../css/style.css">
+
+  <!-- ⭐ SISTEMA DE LOGROS -->
+  <script src="../../js/logros.js"></script>
 </head>
 
 <body>
@@ -27,36 +30,37 @@
     <section>
       <h1 class="section-title">Ecuaciones de Primer Grado</h1>
       <p class="section-subtitle">
-        Resuelve la ecuación del tipo <strong>ax + b = c</strong>.  
-        Perfecto para estudiantes de secundaria.
+        Resuelve la ecuación. Todas son ecuaciones lineales del tipo <strong>ax + b = c</strong>.
       </p>
     </section>
 
     <section>
       <div class="game-container">
 
-        <!-- ECUACIÓN -->
+        <!-- Ecuación -->
         <div>
           <span class="game-level-label">Nivel 3 · Álgebra</span>
 
           <p id="ecuacion-texto" class="game-question">3x + 5 = 20</p>
 
+          <!-- Opciones -->
           <div id="ecuacion-opciones" class="game-options"></div>
 
+          <!-- Resultado -->
           <p id="ecuacion-resultado" class="game-result"></p>
 
+          <!-- Nueva ecuación -->
           <button class="btn btn-primary" onclick="nuevaEcuacion()">
             🔁 Nueva ecuación
           </button>
         </div>
 
-        <!-- TIPS -->
+        <!-- INSTRUCCIONES -->
         <aside class="game-side">
           <p class="game-side-title">¿Cómo resolver?</p>
-          <p>1. Resta el término independiente del otro lado.</p>
+          <p>1. Resta el término independiente.</p>
           <p>2. Divide entre el coeficiente.</p>
-          <p><strong>Ejemplo:</strong> 3x + 5 = 20 → 3x = 15 → x = 5</p>
-          <p>Usa el pizarrón si lo necesitas.</p>
+          <p>Ejemplo: 3x + 5 = 20 → 3x = 15 → x = 5</p>
         </aside>
 
       </div>
@@ -73,10 +77,7 @@
     MatePlay · Actividad de Ecuaciones · 2025
   </footer>
 
-  <!-- ⭐ CONEXIÓN A LOGROS -->
-  <script src="../../js/logros.js"></script>
-
-  <!-- ⭐ POPUP -->
+  <!-- ⭐ POPUP DE ESTRELLA -->
   <script>
     function popupEstrella() {
       let pop = document.createElement("div");
@@ -102,21 +103,20 @@
     }
   </script>
 
-  <!-- ⭐ SCRIPT ECUACIONES -->
+  <!-- SCRIPT DE LA ACTIVIDAD -->
   <script>
     let solucionCorrecta = 0;
 
     function nuevaEcuacion() {
-      // Generar coeficientes
-      const a = Math.floor(Math.random() * 8) + 2;   // 2–9
-      const x = Math.floor(Math.random() * 12) + 1;  // solución real
-      const b = Math.floor(Math.random() * 15) + 1;  // 1–15
-      const c = a * x + b; // para que sea exacta
+      // Generar valores
+      const a = Math.floor(Math.random() * 8) + 2;
+      const x = Math.floor(Math.random() * 10) + 1;
+      const b = Math.floor(Math.random() * 10) + 1;
+      const c = a * x + b;
 
       solucionCorrecta = x;
 
-      document.getElementById("ecuacion-texto").textContent =
-        `${a}x + ${b} = ${c}`;
+      document.getElementById("ecuacion-texto").textContent = `${a}x + ${b} = ${c}`;
 
       const res = document.getElementById("ecuacion-resultado");
       res.textContent = "";
@@ -126,8 +126,9 @@
       opciones.add(solucionCorrecta);
 
       while (opciones.size < 4) {
-        let falso = Math.floor(Math.random() * 15) + 1;
-        opciones.add(falso);
+        let desvio = Math.floor(Math.random() * 7) - 3;
+        let posible = solucionCorrecta + desvio;
+        if (posible > 0) opciones.add(posible);
       }
 
       const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
@@ -151,6 +152,7 @@
         res.textContent = "¡Correcto! 🎉";
         res.className = "game-result ok";
 
+        // ⭐ SUMAR ESTRELLA
         if (typeof sumarEstrella === "function") {
           sumarEstrella("nivel3_ecuaciones");
         }

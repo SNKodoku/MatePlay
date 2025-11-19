@@ -131,7 +131,7 @@
       opciones.add(multiCorrecta);
 
       while (opciones.size < 4) {
-        let desvio = Math.floor(Math.random() * 13) - 6; // -6 a +6
+        let desvio = Math.floor(Math.random() * 13) - 6;
         let posible = multiCorrecta + desvio;
         if (posible > 0) opciones.add(posible);
       }
@@ -158,7 +158,7 @@
 
         // ⭐ SUMAR ESTRELLA
         if (typeof sumarEstrella === "function") {
-          sumarEstrella("nivel2_multiplicaciones");
+          sumarEstrella("logro_n2_multiplicaciones");
         }
 
         popupEstrella();

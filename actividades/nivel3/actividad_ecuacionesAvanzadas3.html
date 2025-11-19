@@ -5,6 +5,9 @@
   <title>Actividad: Ecuaciones Avanzadas (ax - b = cx + d) | MatePlay</title>
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <link rel="stylesheet" href="../../css/style.css">
+
+  <!-- ⭐ SISTEMA DE LOGROS -->
+  <script src="../../js/logros.js"></script>
 </head>
 
 <body>
@@ -28,8 +31,7 @@
   <section>
     <h1 class="section-title">Ecuaciones Avanzadas</h1>
     <p class="section-subtitle">
-      Resuelve ecuaciones del tipo <strong>ax - b = cx + d</strong>.  
-      Actividad avanzada ideal para tercero de secundaria o prepa.
+      Resuelve ecuaciones del tipo <strong>ax - b = cx + d</strong>.
     </p>
   </section>
 
@@ -54,10 +56,9 @@
       <!-- DERECHA -->
       <aside class="game-side">
         <p class="game-side-title">¿Cómo resolver?</p>
-        <p>1. Pasa las x al mismo lado: <strong>ax - cx</strong></p>
-        <p>2. Pasa las constantes al otro lado: <strong>d + b</strong></p>
-        <p>3. Simplifica:</p>
-        <p><strong>(a - c)x = d + b</strong></p>
+        <p>1. Pasa las x al mismo lado: (a - c)x</p>
+        <p>2. Pasa las constantes al otro lado: d + b</p>
+        <p>3. Divide:</p>
         <p><strong>x = (d + b) / (a - c)</strong></p>
       </aside>
 
@@ -76,10 +77,7 @@
   MatePlay · Actividad de Ecuaciones Avanzadas · 2025
 </footer>
 
-<!-- ⭐ SISTEMA DE LOGROS -->
-<script src="../../js/logros.js"></script>
-
-<!-- ⭐ POPUP -->
+<!-- ⭐ POPUP DE ESTRELLA -->
 <script>
   function popupEstrella() {
     let pop = document.createElement("div");
@@ -105,27 +103,20 @@
   }
 </script>
 
-<!-- ⭐ LÓGICA DE LA ACTIVIDAD -->
+<!-- SCRIPT PRINCIPAL -->
 <script>
   let solucionCorrecta = 0;
 
   function nuevaEcuacionAv() {
+    let a = Math.floor(Math.random() * 8) + 2;
+    let c = Math.floor(Math.random() * 8) + 2;
+    while (a === c) c = Math.floor(Math.random() * 8) + 2;
 
-    let a = Math.floor(Math.random() * 8) + 2;   // 2–9
-    let c = Math.floor(Math.random() * 8) + 2;   // 2–9
+    let b = Math.floor(Math.random() * 10) + 1;
+    let d = Math.floor(Math.random() * 10) + 1;
 
-    while (a === c) {
-      c = Math.floor(Math.random() * 8) + 2;
-    }
-
-    let x = Math.floor(Math.random() * 12) + 1;  // x ENTERA garantizada
-
-    // Construimos la ecuación para que dé esa x EXACTA:
-    // ax - b = cx + d  →  d = ax - b - cx
-    let b = Math.floor(Math.random() * 10) + 1;   // 1–10
-    let d = a * x - b - c * x;
-
-    solucionCorrecta = x;
+    solucionCorrecta = (d + b) / (a - c);
+    solucionCorrecta = Math.round(solucionCorrecta);
 
     document.getElementById("ecuAv-texto").textContent =
       `${a}x - ${b} = ${c}x + ${d}`;
@@ -141,10 +132,13 @@
     const cont = document.getElementById("ecuAv-opciones");
     cont.innerHTML = "";
 
-    const opciones = new Set([correcta]);
+    const opciones = new Set();
+    opciones.add(correcta);
 
     while (opciones.size < 4) {
-      opciones.add(correcta + Math.floor(Math.random() * 11) - 5);
+      let desvio = Math.floor(Math.random() * 11) - 5;
+      let posible = correcta + desvio;
+      opciones.add(posible);
     }
 
     const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
@@ -165,8 +159,9 @@
       res.textContent = "¡Correcto! 🎉";
       res.className = "game-result ok";
 
+      // ⭐ GUARDAR LOGRO
       if (typeof sumarEstrella === "function") {
-        sumarEstrella("nivel3_ecuaciones_avanzadas");
+        sumarEstrella("nivel3_ecuacionesAvanzadas");
       }
 
       popupEstrella();
