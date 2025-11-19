@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Funciones Lineales | MatePlay</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+
+<!-- NAV -->
+<header>
+  <nav class="nav">
+    <div class="logo">
+      <div class="logo-icon">M</div>
+      <span>MatePlay</span>
+    </div>
+    <div class="nav-links">
+      <a href="../../nivel3.html">Volver al Nivel 3</a>
+      <a href="../../logros.html">Logros ⭐</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <section>
+    <h1 class="section-title">Funciones Lineales</h1>
+    <p class="section-subtitle">
+      Observa la ecuación y elige cuál gráfica corresponde a la recta.
+    </p>
+  </section>
+
+  <section>
+    <div class="game-container">
+
+      <!-- IZQUIERDA -->
+      <div>
+        <span class="game-level-label">Nivel 3 · Gráficas</span>
+
+        <!-- Ecuación -->
+        <p id="funcion-texto" class="game-question"></p>
+
+        <!-- Canvas principal -->
+        <canvas id="grafCanvas" width="350" height="300"
+                style="background:#f9fafb;border-radius:12px;margin-bottom:1rem;">
+        </canvas>
+
+        <p class="section-subtitle" style="font-size:1rem;">Elige la gráfica correcta:</p>
+
+        <!-- Opciones -->
+        <div id="miniGraficas" class="levels-grid"></div>
+
+        <!-- Resultado -->
+        <p id="funcion-resultado" class="game-result"></p>
+
+        <button class="btn btn-primary" onclick="nuevaFuncion()">
+          🔄 Nueva función
+        </button>
+      </div>
+
+      <!-- DERECHA -->
+      <aside class="game-side">
+        <p class="game-side-title">Consejos</p>
+        <p><strong>Pendiente (m):</strong> indica inclinación.</p>
+        <p><strong>Intersección (b):</strong> corte con eje Y.</p>
+        <hr>
+        <p><strong>m > 0:</strong> la recta sube.</p>
+        <p><strong>m < 0:</strong> la recta baja.</p>
+        <p><strong>b alto:</strong> la recta se desplaza hacia arriba.</p>
+      </aside>
+
+    </div>
+  </section>
+
+  <section style="margin-top:2rem;">
+    <button class="btn btn-secondary" onclick="window.location.href='../nivel3.html'">
+      ⬅ Volver al Nivel 3
+    </button>
+  </section>
+
+</main>
+
+<footer>
+  MatePlay · Funciones Lineales · 2025
+</footer>
+
+<!-- ⭐ SISTEMA DE LOGROS -->
+<script src="../../js/logros.js"></script>
+
+<!-- ⭐ POPUP DE ESTRELLA -->
+<script>
+  function popupEstrella() {
+    let pop = document.createElement("div");
+    pop.textContent = "⭐ ¡Ganaste una estrella!";
+    pop.style.position = "fixed";
+    pop.style.bottom = "25px";
+    pop.style.right = "25px";
+    pop.style.padding = "15px 20px";
+    pop.style.background = "#4f46e5";
+    pop.style.color = "white";
+    pop.style.borderRadius = "10px";
+    pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+    pop.style.zIndex = "999";
+    pop.style.opacity = "1";
+    pop.style.transition = "opacity 1s ease";
+
+    document.body.appendChild(pop);
+
+    setTimeout(() => {
+      pop.style.opacity = "0";
+      setTimeout(() => pop.remove(), 1000);
+    }, 1500);
+  }
+</script>
+
+<!-- ⭐ SCRIPT PRINCIPAL -->
+<script>
+  const canvas = document.getElementById("grafCanvas");
+  const ctx = canvas.getContext("2d");
+
+  let correctaIndex = 0;
+
+  function nuevaFuncion() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Elegimos m y b aleatorios
+    let m = Math.floor(Math.random() * 7) - 3;  // -3 a 3
+    while (m === 0) m = Math.floor(Math.random() * 7) - 3;
+
+    let b = Math.floor(Math.random() * 11) - 5; // -5 a 5
+
+    document.getElementById("funcion-texto").textContent = `y = ${m}x + ${b}`;
+
+    // Dibujar gráfica principal
+    dibujarPlano(ctx);
+    dibujarRecta(ctx, m, b, "#ef4444", 2);
+
+    generarMiniGraficas(m, b);
+
+    document.getElementById("funcion-resultado").textContent = "";
+  }
+
+  /* === GENERAR MINI-GRÁFICAS === */
+  function generarMiniGraficas(mCorrecta, bCorrecta) {
+    const cont = document.getElementById("miniGraficas");
+    cont.innerHTML = "";
+
+    correctaIndex = Math.floor(Math.random() * 4);
+
+    let opciones = [];
+
+    for (let i = 0; i < 4; i++) {
+      let m, b;
+
+      if (i === correctaIndex) {
+        m = mCorrecta;
+        b = bCorrecta;
+      } else {
+        m = mCorrecta + (Math.floor(Math.random() * 5) - 2);
+        if (m === 0) m = 1;
+        b = bCorrecta + (Math.floor(Math.random() * 9) - 4);
+      }
+
+      opciones.push({ m, b });
+    }
+
+    opciones.forEach((op, index) => {
+      let card = document.createElement("div");
+      card.className = "level-card";
+      card.style.padding = "10px";
+
+      let mini = document.createElement("canvas");
+      mini.width = 150;
+      mini.height = 120;
+      mini.style.background = "#f9fafb";
+      mini.style.borderRadius = "8px";
+
+      card.appendChild(mini);
+
+      let miniCtx = mini.getContext("2d");
+      dibujarPlano(miniCtx);
+      dibujarRecta(miniCtx, op.m, op.b, "#3b82f6", 2);
+
+      card.onclick = () => evaluarFuncion(index);
+
+      cont.appendChild(card);
+    });
+  }
+
+  function evaluarFuncion(indice) {
+    const res = document.getElementById("funcion-resultado");
+
+    if (indice === correctaIndex) {
+      res.textContent = "¡Correcto! 🎉";
+      res.className = "game-result ok";
+
+      if (typeof sumarEstrella === "function") {
+        sumarEstrella("nivel3_funciones_lineales");
+      }
+
+      popupEstrella();
+
+    } else {
+      res.textContent = "Incorrecto ❌";
+      res.className = "game-result bad";
+    }
+  }
+
+  /* === DIBUJAR PLANO === */
+  function dibujarPlano(c) {
+    const W = c.canvas.width;
+    const H = c.canvas.height;
+
+    c.strokeStyle = "#9ca3af";
+    c.lineWidth = 1;
+
+    // Eje X
+    c.beginPath();
+    c.moveTo(0, H/2);
+    c.lineTo(W, H/2);
+    c.stroke();
+
+    // Eje Y
+    c.beginPath();
+    c.moveTo(W/2, 0);
+    c.lineTo(W/2, H);
+    c.stroke();
+  }
+
+  /* === DIBUJAR RECTA === */
+  function dibujarRecta(c, m, b, color, width) {
+    const W = c.canvas.width;
+    const H = c.canvas.height;
+
+    let x1 = -10;
+    let y1 = m * x1 + b;
+
+    let x2 = 10;
+    let y2 = m * x2 + b;
+
+    c.strokeStyle = color;
+    c.lineWidth = width;
+
+    c.beginPath();
+    c.moveTo(W/2 + x1*10, H/2 - y1*10);
+    c.lineTo(W/2 + x2*10, H/2 - y2*10);
+    c.stroke();
+  }
+
+  nuevaFuncion();
+</script>
+
+</body>
+</html>

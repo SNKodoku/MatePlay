@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Sistemas de Ecuaciones | MatePlay</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+
+<!-- NAV -->
+<header>
+  <nav class="nav">
+    <div class="logo">
+      <div class="logo-icon">M</div>
+      <span>MatePlay</span>
+    </div>
+    <div class="nav-links">
+      <a href="../../nivel3.html">Volver al Nivel 3</a>
+      <a href="../../logros.html">Logros ⭐</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <section>
+    <h1 class="section-title">Sistemas de Ecuaciones</h1>
+    <p class="section-subtitle">
+      Observa las dos rectas y elige el punto donde se intersectan.  
+      Actividad avanzada con representación gráfica.
+    </p>
+  </section>
+
+  <section>
+    <div class="game-container">
+
+      <!-- IZQUIERDA -->
+      <div>
+        <span class="game-level-label">Nivel 3 · Álgebra Avanzada</span>
+
+        <canvas id="sisCanvas" width="350" height="300"
+                style="background:#f9fafb;border-radius:12px;margin-bottom:1rem;">
+        </canvas>
+
+        <p id="sisPregunta" class="game-question">
+          ¿Cuál es el punto de intersección?
+        </p>
+
+        <div id="sisOpciones" class="game-options"></div>
+
+        <p id="sisResultado" class="game-result"></p>
+
+        <button class="btn btn-primary" onclick="nuevoSistema()">
+          🔄 Nuevo sistema
+        </button>
+      </div>
+
+      <!-- DERECHA -->
+      <aside class="game-side">
+        <p class="game-side-title">¿Cómo se resuelve?</p>
+        <p>El punto donde se cruzan ambas rectas es la solución.</p>
+        <hr>
+        <p>Si y = m₁x + b₁ y y = m₂x + b₂,</p>
+        <p><strong>m₁x + b₁ = m₂x + b₂</strong></p>
+      </aside>
+
+    </div>
+  </section>
+
+  <section style="margin-top:2rem;">
+    <button class="btn btn-secondary" onclick="window.location.href='../nivel3.html'">
+      ⬅ Volver al Nivel 3
+    </button>
+  </section>
+
+</main>
+
+<footer>
+  MatePlay · Actividad de Sistemas · 2025
+</footer>
+
+<!-- ⭐ SISTEMA DE LOGROS -->
+<script src="../../js/logros.js"></script>
+
+<!-- ⭐ POPUP DE ESTRELLA -->
+<script>
+  function popupEstrella() {
+    let pop = document.createElement("div");
+    pop.textContent = "⭐ ¡Ganaste una estrella!";
+    pop.style.position = "fixed";
+    pop.style.bottom = "25px";
+    pop.style.right = "25px";
+    pop.style.padding = "15px 20px";
+    pop.style.background = "#4f46e5";
+    pop.style.color = "white";
+    pop.style.borderRadius = "10px";
+    pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+    pop.style.zIndex = "999";
+    pop.style.opacity = "1";
+    pop.style.transition = "opacity 1s ease";
+
+    document.body.appendChild(pop);
+
+    setTimeout(() => {
+      pop.style.opacity = "0";
+      setTimeout(() => pop.remove(), 1000);
+    }, 1500);
+  }
+</script>
+
+<!-- ⭐ SCRIPT PRINCIPAL -->
+<script>
+  const canvas = document.getElementById("sisCanvas");
+  const ctx = canvas.getContext("2d");
+
+  let interseccionCorrecta = null;
+
+  function nuevoSistema() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let m1 = Math.floor(Math.random() * 5) - 2;
+    let m2 = Math.floor(Math.random() * 5) - 2;
+    while (m1 === m2) m2 = Math.floor(Math.random() * 5) - 2;
+
+    let b1 = Math.floor(Math.random() * 10) - 5;
+    let b2 = Math.floor(Math.random() * 10) - 5;
+
+    let x = (b2 - b1) / (m1 - m2);
+    let y = m1 * x + b1;
+
+    interseccionCorrecta = {
+      x: Math.round(x),
+      y: Math.round(y)
+    };
+
+    dibujarEjes();
+    dibujarRecta(m1, b1, "#ef4444");
+    dibujarRecta(m2, b2, "#3b82f6");
+
+    document.getElementById("sisPregunta").textContent =
+      "¿Cuál es el punto de intersección?";
+
+    generarOpciones(interseccionCorrecta.x, interseccionCorrecta.y);
+
+    document.getElementById("sisResultado").textContent = "";
+  }
+
+  function dibujarEjes() {
+    ctx.strokeStyle = "#9ca3af";
+    ctx.lineWidth = 1;
+
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height/2);
+    ctx.lineTo(canvas.width, canvas.height/2);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(canvas.width/2, 0);
+    ctx.lineTo(canvas.width/2, canvas.height);
+    ctx.stroke();
+  }
+
+  function dibujarRecta(m, b, color) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+
+    let x1 = -20;
+    let y1 = m * x1 + b;
+
+    let x2 = 20;
+    let y2 = m * x2 + b;
+
+    ctx.beginPath();
+    ctx.moveTo(canvas.width/2 + x1 * 10, canvas.height/2 - y1 * 10);
+    ctx.lineTo(canvas.width/2 + x2 * 10, canvas.height/2 - y2 * 10);
+    ctx.stroke();
+  }
+
+  function generarOpciones(xC, yC) {
+    const cont = document.getElementById("sisOpciones");
+    cont.innerHTML = "";
+
+    const opciones = new Set();
+    opciones.add(`(${xC}, ${yC})`);
+
+    while (opciones.size < 4) {
+      let xR = xC + Math.floor(Math.random() * 7) - 3;
+      let yR = yC + Math.floor(Math.random() * 7) - 3;
+      opciones.add(`(${xR}, ${yR})`);
+    }
+
+    const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
+
+    mezcladas.forEach(op => {
+      const btn = document.createElement("button");
+      btn.className = "game-option";
+      btn.textContent = op;
+      btn.onclick = () => evaluar(op);
+      cont.appendChild(btn);
+    });
+  }
+
+  function evaluar(opcion) {
+    const res = document.getElementById("sisResultado");
+
+    let correcta = `(${interseccionCorrecta.x}, ${interseccionCorrecta.y})`;
+
+    if (opcion === correcta) {
+      res.textContent = "¡Correcto! 🎉";
+      res.className = "game-result ok";
+
+      if (typeof sumarEstrella === "function") {
+        sumarEstrella("nivel3_sistemas");
+      }
+
+      popupEstrella();
+
+    } else {
+      res.textContent = "Incorrecto ❌";
+      res.className = "game-result bad";
+    }
+  }
+
+  nuevoSistema();
+</script>
+
+</body>
+</html>

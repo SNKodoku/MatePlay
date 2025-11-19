@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Error 404 - Página no encontrada</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .error-container {
+      text-align: center;
+      padding: 3rem;
+    }
+
+    .error-code {
+      font-size: 6rem;
+      font-weight: 900;
+      color: #4f46e5;
+    }
+
+    .error-message {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #374151;
+    }
+
+    .error-subtext {
+      color: #6b7280;
+      margin-bottom: 2rem;
+    }
+
+    .error-emoji {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .error-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">
+      <div class="logo-icon">M</div>
+      <span>MatePlay</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="nivel1.html">Nivel 1</a>
+      <a href="nivel2.html">Nivel 2</a>
+      <a href="nivel3.html">Nivel 3</a>
+      <a href="multimedia.html">Multimedia</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="error-container">
+    
+    <div class="error-emoji">🤔❓</div>
+
+    <div class="error-code">404</div>
+    <p class="error-message">Ups… esta página no existe.</p>
+
+    <p class="error-subtext">
+      Puede que el enlace esté roto o que la página haya sido movida.<br>
+      No te preocupes, regresemos al camino correcto.
+    </p>
+
+    <div class="error-buttons">
+      <button class="btn btn-primary" onclick="window.location.href='index.html'">
+        🔙 Volver al inicio
+      </button>
+      <button class="btn btn-secondary" onclick="window.location.href='nivel1.html'">
+        📘 Ir a Nivel 1
+      </button>
+      <button class="btn btn-secondary" onclick="window.location.href='multimedia.html'">
+        🎬 Ir a Multimedia
+      </button>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  MatePlay · Error 404 · 2025
+</footer>
+
+</body>
+</html>

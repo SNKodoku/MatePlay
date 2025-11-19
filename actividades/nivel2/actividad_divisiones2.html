@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Divisiones Básicas | MatePlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+  <!-- NAV -->
+  <header>
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-icon">M</div>
+        <span>MatePlay</span>
+      </div>
+
+      <div class="nav-links">
+        <a href="../../nivel2.html">Volver al Nivel 2</a>
+        <a href="../../logros.html">Logros ⭐</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- TÍTULO -->
+    <section>
+      <h1 class="section-title">Divisiones Básicas</h1>
+      <p class="section-subtitle">
+        Practica divisiones exactas y sencillas, ideales para primaria alta (10–12 años).
+      </p>
+    </section>
+
+    <!-- ACTIVIDAD -->
+    <section>
+      <div class="game-container">
+
+        <!-- Juego -->
+        <div>
+          <span class="game-level-label">Nivel 2 · División</span>
+
+          <p id="division-pregunta" class="game-question">12 ÷ 3 = ?</p>
+
+          <div id="division-opciones" class="game-options"></div>
+
+          <p id="division-resultado" class="game-result"></p>
+
+          <button class="btn btn-primary" onclick="nuevaDivision()">
+            🔁 Nueva división
+          </button>
+        </div>
+
+        <!-- Tips -->
+        <aside class="game-side">
+          <p class="game-side-title">¿Cómo resolver?</p>
+          <p>La división es repartir algo en partes iguales.</p>
+          <p>Ejemplo: 12 ÷ 3 significa repartir 12 entre 3 grupos.</p>
+          <p>Puedes usar el pizarrón virtual para dibujar el reparto.</p>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- VOLVER -->
+    <section style="margin-top: 2rem;">
+      <button class="btn btn-secondary" onclick="window.location.href='../nivel2.html'">
+        ⬅ Volver al Nivel 2
+      </button>
+    </section>
+
+  </main>
+
+  <footer>
+    MatePlay · Actividad de Divisiones · 2025
+  </footer>
+
+  <!-- ⭐ SISTEMA DE LOGROS -->
+  <script src="../../js/logros.js"></script>
+
+  <!-- ⭐ POPUP DE ESTRELLA -->
+  <script>
+    function popupEstrella() {
+      let pop = document.createElement("div");
+      pop.textContent = "⭐ ¡Ganaste una estrella!";
+      pop.style.position = "fixed";
+      pop.style.bottom = "25px";
+      pop.style.right = "25px";
+      pop.style.padding = "15px 20px";
+      pop.style.background = "#4f46e5";
+      pop.style.color = "white";
+      pop.style.borderRadius = "10px";
+      pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+      pop.style.zIndex = "999";
+      pop.style.opacity = "1";
+      pop.style.transition = "opacity 1s ease";
+
+      document.body.appendChild(pop);
+
+      setTimeout(() => {
+        pop.style.opacity = "0";
+        setTimeout(() => pop.remove(), 1000);
+      }, 1500);
+    }
+  </script>
+
+  <!-- ⭐ SCRIPT DE LA ACTIVIDAD -->
+  <script>
+    let divisionCorrecta = 0;
+
+    function nuevaDivision() {
+      // Divisor (2–10)
+      let b = Math.floor(Math.random() * 9) + 2;
+
+      // Resultado correcto (1–10)
+      let resultado = Math.floor(Math.random() * 10) + 1;
+
+      // Para que sea exacta:
+      let a = b * resultado;
+
+      divisionCorrecta = resultado;
+
+      document.getElementById("division-pregunta").textContent = `${a} ÷ ${b} = ?`;
+
+      const res = document.getElementById("division-resultado");
+      res.textContent = "";
+      res.className = "game-result";
+
+      const opciones = new Set();
+      opciones.add(divisionCorrecta);
+
+      while (opciones.size < 4) {
+        let desvio = Math.floor(Math.random() * 7) - 3;
+        let posible = divisionCorrecta + desvio;
+        if (posible > 0) opciones.add(posible);
+      }
+
+      const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
+
+      const contenedor = document.getElementById("division-opciones");
+      contenedor.innerHTML = "";
+
+      mezcladas.forEach(num => {
+        const btn = document.createElement("button");
+        btn.className = "game-option";
+        btn.textContent = num;
+        btn.onclick = () => evaluarDivision(num);
+        contenedor.appendChild(btn);
+      });
+    }
+
+    function evaluarDivision(num) {
+      const res = document.getElementById("division-resultado");
+
+      if (num === divisionCorrecta) {
+        res.textContent = "¡Correcto! 🎉";
+        res.className = "game-result ok";
+
+        // ⭐ SUMAR ESTRELLA SI EL SISTEMA EXISTE
+        if (typeof sumarEstrella === "function") {
+          sumarEstrella("nivel2_divisiones");
+        }
+
+        popupEstrella();
+
+      } else {
+        res.textContent = "Respuesta incorrecta ❌";
+        res.className = "game-result bad";
+      }
+    }
+
+    nuevaDivision();
+  </script>
+
+</body>
+</html>

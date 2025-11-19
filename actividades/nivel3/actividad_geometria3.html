@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Perímetros y Áreas | MatePlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+
+<!-- NAV -->
+<header>
+  <nav class="nav">
+    <div class="logo">
+      <div class="logo-icon">M</div>
+      <span>MatePlay</span>
+    </div>
+    <div class="nav-links">
+      <a href="../../nivel3.html">Volver al Nivel 3</a>
+      <a href="../../logros.html">Logros ⭐</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <section>
+    <h1 class="section-title">Perímetros y Áreas</h1>
+    <p class="section-subtitle">
+      Observa la figura y responde la pregunta.  
+      Puede ser un rectángulo, un triángulo o un círculo.
+    </p>
+  </section>
+
+  <section>
+    <div class="game-container">
+
+      <!-- IZQUIERDA -->
+      <div>
+        <span class="game-level-label">Nivel 3 · Geometría</span>
+
+        <canvas id="figCanvas" width="300" height="250"
+                style="background:#f9fafb;border-radius:12px;margin-bottom:1rem;">
+        </canvas>
+
+        <p id="figPregunta" class="game-question"></p>
+
+        <div id="figOpciones" class="game-options"></div>
+
+        <p id="figResultado" class="game-result"></p>
+
+        <button class="btn btn-primary" onclick="nuevaFigura()">
+          🔄 Nueva figura
+        </button>
+      </div>
+
+      <!-- DERECHA -->
+      <aside class="game-side">
+        <p class="game-side-title">Fórmulas útiles</p>
+        <p><strong>Rectángulo</strong></p>
+        <p>Área = base × altura</p>
+        <p>Perímetro = 2(base + altura)</p>
+        <hr>
+        <p><strong>Triángulo equilátero</strong></p>
+        <p>Área = (lado² × √3)/4</p>
+        <p>Perímetro = 3 × lado</p>
+        <hr>
+        <p><strong>Círculo</strong></p>
+        <p>Área = πr²</p>
+        <p>Perímetro = 2πr</p>
+      </aside>
+
+    </div>
+  </section>
+
+  <section style="margin-top:2rem;">
+    <button class="btn btn-secondary" onclick="window.location.href='../nivel3.html'">
+      ⬅ Volver al Nivel 3
+    </button>
+  </section>
+
+</main>
+
+<footer>
+  MatePlay · Actividad de Geometría · 2025
+</footer>
+
+<!-- ⭐ SISTEMA DE LOGROS -->
+<script src="../../js/logros.js"></script>
+
+<!-- ⭐ POPUP -->
+<script>
+  function popupEstrella() {
+    let pop = document.createElement("div");
+    pop.textContent = "⭐ ¡Ganaste una estrella!";
+    pop.style.position = "fixed";
+    pop.style.bottom = "25px";
+    pop.style.right = "25px";
+    pop.style.padding = "15px 20px";
+    pop.style.background = "#4f46e5";
+    pop.style.color = "white";
+    pop.style.borderRadius = "10px";
+    pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+    pop.style.zIndex = "999";
+    pop.style.opacity = "1";
+    pop.style.transition = "opacity 1s ease";
+
+    document.body.appendChild(pop);
+
+    setTimeout(() => {
+      pop.style.opacity = "0";
+      setTimeout(() => pop.remove(), 1000);
+    }, 1500);
+  }
+</script>
+
+<!-- ⭐ SCRIPT PRINCIPAL -->
+<script>
+  const canvas = document.getElementById("figCanvas");
+  const ctx = canvas.getContext("2d");
+
+  let respuestaCorrecta = 0;
+
+  function nuevaFigura() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const figuras = ["rectangulo", "triangulo", "circulo"];
+    const figura = figuras[Math.floor(Math.random() * figuras.length)];
+
+    let preguntaTipo = Math.random() < 0.5 ? "area" : "perimetro";
+
+    let base, altura, lado, radio;
+
+    /* === RECTÁNGULO === */
+    if (figura === "rectangulo") {
+      base = Math.floor(Math.random() * 15) + 5;
+      altura = Math.floor(Math.random() * 15) + 5;
+      dibujarRectangulo(base, altura);
+
+      respuestaCorrecta = preguntaTipo === "area"
+        ? base * altura
+        : 2 * (base + altura);
+    }
+
+    /* === TRIÁNGULO === */
+    if (figura === "triangulo") {
+      lado = Math.floor(Math.random() * 10) + 5;
+      dibujarTriangulo(lado);
+
+      respuestaCorrecta = preguntaTipo === "area"
+        ? Math.round((lado * lado * Math.sqrt(3)) / 4)
+        : 3 * lado;
+    }
+
+    /* === CÍRCULO === */
+    if (figura === "circulo") {
+      radio = Math.floor(Math.random() * 8) + 3;
+      dibujarCirculo(radio);
+
+      respuestaCorrecta = preguntaTipo === "area"
+        ? Math.round(Math.PI * radio * radio)
+        : Math.round(2 * Math.PI * radio);
+    }
+
+    // Pregunta
+    const texto =
+      figura === "rectangulo" && preguntaTipo === "area"
+        ? "¿Cuál es el área del rectángulo?"
+        : figura === "rectangulo"
+        ? "¿Cuál es el perímetro del rectángulo?"
+        : figura === "triangulo" && preguntaTipo === "area"
+        ? "¿Cuál es el área del triángulo equilátero?"
+        : figura === "triangulo"
+        ? "¿Cuál es el perímetro del triángulo equilátero?"
+        : preguntaTipo === "area"
+        ? "¿Cuál es el área del círculo?"
+        : "¿Cuál es el perímetro del círculo?";
+
+    document.getElementById("figPregunta").textContent = texto;
+
+    generarOpciones(respuestaCorrecta);
+    document.getElementById("figResultado").textContent = "";
+  }
+
+  /* === OPCIONES === */
+  function generarOpciones(correcta) {
+    const cont = document.getElementById("figOpciones");
+    cont.innerHTML = "";
+
+    const opciones = new Set();
+    opciones.add(correcta);
+
+    while (opciones.size < 4) {
+      let desvio = Math.floor(Math.random() * 20) - 10;
+      let posible = correcta + desvio;
+      if (posible > 0) opciones.add(posible);
+    }
+
+    const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
+
+    mezcladas.forEach(op => {
+      const btn = document.createElement("button");
+      btn.className = "game-option";
+      btn.textContent = op;
+      btn.onclick = () => evaluar(op);
+      cont.appendChild(btn);
+    });
+  }
+
+  /* === EVALUAR === */
+  function evaluar(op) {
+    const res = document.getElementById("figResultado");
+
+    if (op == respuestaCorrecta) {
+      res.textContent = "¡Correcto! 🎉";
+      res.className = "game-result ok";
+
+      if (typeof sumarEstrella === "function") {
+        sumarEstrella("nivel3_geometria");
+      }
+
+      popupEstrella();
+    } else {
+      res.textContent = "Incorrecto ❌";
+      res.className = "game-result bad";
+    }
+  }
+
+  /* === DIBUJAR FIGURAS === */
+
+  function dibujarRectangulo(base, altura) {
+    ctx.strokeStyle = "#1f2937";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(60, 40, base * 8, altura * 8);
+
+    ctx.font = "14px Arial";
+    ctx.fillText(`Base: ${base}`, 60, 30);
+    ctx.fillText(`Altura: ${altura}`, 60 + base * 8 + 10, 40 + altura * 4);
+  }
+
+  function dibujarTriangulo(lado) {
+    const h = (lado * Math.sqrt(3)) / 2;
+
+    ctx.beginPath();
+    ctx.moveTo(150, 40);
+    ctx.lineTo(150 - lado * 4, 40 + h * 4);
+    ctx.lineTo(150 + lado * 4, 40 + h * 4);
+    ctx.closePath();
+    ctx.strokeStyle = "#1f2937";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.fillText(`Lado: ${lado}`, 140, 30);
+  }
+
+  function dibujarCirculo(radio) {
+    ctx.beginPath();
+    ctx.arc(150, 120, radio * 10, 0, Math.PI * 2);
+    ctx.strokeStyle = "#1f2937";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.fillText(`Radio: ${radio}`, 130, 25);
+  }
+
+  // Iniciar
+  nuevaFigura();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Ecuaciones de 1er Grado | MatePlay</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-icon">M</div>
+        <span>MatePlay</span>
+      </div>
+
+      <div class="nav-links">
+        <a href="../../nivel3.html">Volver al Nivel 3</a>
+        <a href="../../logros.html">Logros ⭐</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h1 class="section-title">Ecuaciones de Primer Grado</h1>
+      <p class="section-subtitle">
+        Resuelve la ecuación del tipo <strong>ax + b = c</strong>.  
+        Perfecto para estudiantes de secundaria.
+      </p>
+    </section>
+
+    <section>
+      <div class="game-container">
+
+        <!-- ECUACIÓN -->
+        <div>
+          <span class="game-level-label">Nivel 3 · Álgebra</span>
+
+          <p id="ecuacion-texto" class="game-question">3x + 5 = 20</p>
+
+          <div id="ecuacion-opciones" class="game-options"></div>
+
+          <p id="ecuacion-resultado" class="game-result"></p>
+
+          <button class="btn btn-primary" onclick="nuevaEcuacion()">
+            🔁 Nueva ecuación
+          </button>
+        </div>
+
+        <!-- TIPS -->
+        <aside class="game-side">
+          <p class="game-side-title">¿Cómo resolver?</p>
+          <p>1. Resta el término independiente del otro lado.</p>
+          <p>2. Divide entre el coeficiente.</p>
+          <p><strong>Ejemplo:</strong> 3x + 5 = 20 → 3x = 15 → x = 5</p>
+          <p>Usa el pizarrón si lo necesitas.</p>
+        </aside>
+
+      </div>
+    </section>
+
+    <section style="margin-top:2rem;">
+      <button class="btn btn-secondary" onclick="window.location.href='../nivel3.html'">
+        ⬅ Volver al Nivel 3
+      </button>
+    </section>
+  </main>
+
+  <footer>
+    MatePlay · Actividad de Ecuaciones · 2025
+  </footer>
+
+  <!-- ⭐ CONEXIÓN A LOGROS -->
+  <script src="../../js/logros.js"></script>
+
+  <!-- ⭐ POPUP -->
+  <script>
+    function popupEstrella() {
+      let pop = document.createElement("div");
+      pop.textContent = "⭐ ¡Ganaste una estrella!";
+      pop.style.position = "fixed";
+      pop.style.bottom = "25px";
+      pop.style.right = "25px";
+      pop.style.padding = "15px 20px";
+      pop.style.background = "#4f46e5";
+      pop.style.color = "white";
+      pop.style.borderRadius = "10px";
+      pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+      pop.style.zIndex = "999";
+      pop.style.opacity = "1";
+      pop.style.transition = "opacity 1s ease";
+
+      document.body.appendChild(pop);
+
+      setTimeout(() => {
+        pop.style.opacity = "0";
+        setTimeout(() => pop.remove(), 1000);
+      }, 1500);
+    }
+  </script>
+
+  <!-- ⭐ SCRIPT ECUACIONES -->
+  <script>
+    let solucionCorrecta = 0;
+
+    function nuevaEcuacion() {
+      // Generar coeficientes
+      const a = Math.floor(Math.random() * 8) + 2;   // 2–9
+      const x = Math.floor(Math.random() * 12) + 1;  // solución real
+      const b = Math.floor(Math.random() * 15) + 1;  // 1–15
+      const c = a * x + b; // para que sea exacta
+
+      solucionCorrecta = x;
+
+      document.getElementById("ecuacion-texto").textContent =
+        `${a}x + ${b} = ${c}`;
+
+      const res = document.getElementById("ecuacion-resultado");
+      res.textContent = "";
+      res.className = "game-result";
+
+      const opciones = new Set();
+      opciones.add(solucionCorrecta);
+
+      while (opciones.size < 4) {
+        let falso = Math.floor(Math.random() * 15) + 1;
+        opciones.add(falso);
+      }
+
+      const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
+
+      const cont = document.getElementById("ecuacion-opciones");
+      cont.innerHTML = "";
+
+      mezcladas.forEach(num => {
+        const btn = document.createElement("button");
+        btn.className = "game-option";
+        btn.textContent = num;
+        btn.onclick = () => evaluarEcuacion(num);
+        cont.appendChild(btn);
+      });
+    }
+
+    function evaluarEcuacion(num) {
+      const res = document.getElementById("ecuacion-resultado");
+
+      if (num === solucionCorrecta) {
+        res.textContent = "¡Correcto! 🎉";
+        res.className = "game-result ok";
+
+        if (typeof sumarEstrella === "function") {
+          sumarEstrella("nivel3_ecuaciones");
+        }
+
+        popupEstrella();
+
+      } else {
+        res.textContent = "Incorrecto ❌";
+        res.className = "game-result bad";
+      }
+    }
+
+    nuevaEcuacion();
+  </script>
+
+</body>
+</html>

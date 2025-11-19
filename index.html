@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>MatePlay - Aprende Matemáticas Jugando</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- ========== HEADER / NAV ========== -->
+  <header>
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-icon">M</div>
+        <span>MatePlay</span>
+      </div>
+      <div class="nav-links">
+        <a href="#inicio">Inicio</a>
+        <a href="nivel1.html">Nivel 1</a>
+        <a href="nivel2.html">Nivel 2</a>
+        <a href="nivel3.html">Nivel 3</a>
+        <a href="#pizarron-section">Pizarrón</a>
+        <a href="multimedia.html">Multimedia</a>
+        <a href="#videos">Videos</a>
+        <a href="logros.html">Logros ⭐</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ========== HERO ========== -->
+    <section id="inicio" class="hero">
+      <div>
+        <h1 class="hero-title">
+          Matemáticas fáciles, <span>jugando</span>.
+        </h1>
+        <p class="hero-text">
+          Plataforma pensada para niñas, niños y jóvenes de 7 a 15 años.  
+          Explicaciones claras, juegos rápidos y un pizarrón virtual para que
+          practiques sin miedo a equivocarte.
+        </p>
+
+        <div class="hero-tags">
+          <span class="tag">+ Multimedia interactiva</span>
+          <span class="tag">+ Ejercicios paso a paso</span>
+          <span class="tag">+ Pensada para primaria y secundaria</span>
+        </div>
+
+        <div class="hero-buttons">
+          <button class="btn btn-primary" onclick="window.location.href='nivel1.html'">
+            🚀 Empezar a practicar
+          </button>
+          <button class="btn btn-secondary" onclick="scrollToSection('niveles')">
+            📚 Ver niveles y temas
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-card">
+          <div class="hero-mini-badge">Nuevo · 2025</div>
+          <p class="hero-card-title">Tu progreso en MatePlay</p>
+          <p style="font-size: 0.85rem; color: #6b7280;">
+            Completa retos diarios y ve cómo subes de nivel en tus habilidades matemáticas.
+          </p>
+          <div class="hero-card-grid">
+            <div class="hero-chip">
+              <span>Sumas &amp; Restas</span>
+              <span>Perfecto para 2°–4° de primaria.</span>
+            </div>
+            <div class="hero-chip">
+              <span>Fracciones</span>
+              <span>Visualizaciones y ejemplos claros.</span>
+            </div>
+            <div class="hero-chip">
+              <span>Geometría</span>
+              <span>Figuras, perímetros y áreas.</span>
+            </div>
+            <div class="hero-chip">
+              <span>Álgebra básica</span>
+              <span>Secundaria y pre-álgebra.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== NIVELES / TEMAS ========== -->
+    <section id="niveles">
+      <h2 class="section-title">Elige tu nivel</h2>
+      <p class="section-subtitle">
+        Contenidos pensados para distintas edades.
+      </p>
+
+      <div class="levels-grid">
+        
+        <!-- NIVEL 1 -->
+        <article class="level-card">
+          <div class="level-label">Nivel 1 · 7–9 años</div>
+          <div class="level-title">Primaria baja</div>
+          <p class="level-topics">
+            Números naturales, sumas, restas, ejercicios visuales y problemas sencillos.
+          </p>
+          <div class="level-footer">
+            <span class="pill">Ideal 2°–4°</span>
+            <button class="btn btn-secondary" onclick="window.location.href='nivel1.html'">
+              Ver actividades
+            </button>
+          </div>
+        </article>
+
+        <!-- NIVEL 2 -->
+        <article class="level-card">
+          <div class="level-label">Nivel 2 · 10–12 años</div>
+          <div class="level-title">Primaria alta</div>
+          <p class="level-topics">
+            Multiplicaciones, divisiones, fracciones, porcentajes, proporciones básicas.
+          </p>
+          <div class="level-footer">
+            <span class="pill" style="background:#fdf2f8;color:#be185d;">
+              Ideal 5°–6°
+            </span>
+            <button class="btn btn-secondary" onclick="window.location.href='nivel2.html'">
+              Ver actividades
+            </button>
+          </div>
+        </article>
+
+        <!-- NIVEL 3 -->
+        <article class="level-card">
+          <div class="level-label">Nivel 3 · 13–15 años</div>
+          <div class="level-title">Secundaria</div>
+          <p class="level-topics">
+            Álgebra, ecuaciones, geometría, funciones, sistemas, proporciones, análisis.
+          </p>
+          <div class="level-footer">
+            <span class="pill" style="background:#eff6ff;color:#1d4ed8;">
+              Ideal 1°–3° Sec.
+            </span>
+            <button class="btn btn-secondary" onclick="window.location.href='nivel3.html'">
+              Ver actividades
+            </button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ========== MINI JUEGO ========== -->
+    <section id="juego">
+      <h2 class="section-title">Juego rápido de sumas</h2>
+      <p class="section-subtitle">Ejercicio interactivo simple.</p>
+
+      <div class="game-container">
+        <div>
+          <span class="game-level-label">Nivel 1 · Operaciones básicas</span>
+          <p id="game-question" class="game-question">3 + 5 = ?</p>
+
+          <div id="game-options" class="game-options"></div>
+
+          <p id="game-result" class="game-result"></p>
+
+          <button class="btn btn-primary" onclick="nuevoEjercicio()">
+            🔁 Otro ejercicio
+          </button>
+        </div>
+
+        <aside class="game-side">
+          <p class="game-side-title">¿Cómo funciona?</p>
+          <p>Haz clic en la respuesta correcta.</p>
+          <p>El sistema te dirá si está bien o no.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ========== PIZARRÓN VIRTUAL (FUNCIONAL) ========== -->
+    <section id="pizarron-section">
+  <h2 class="section-title">Pizarrón virtual</h2>
+  <p class="section-subtitle">
+    Dibuja, escribe, resuelve operaciones, marca figuras o guarda tus notas.
+  </p>
+
+  <div class="board-wrapper">
+    <div class="board-card">
+      
+      <canvas id="pizarron" width="700" height="380"></canvas>
+
+      <div class="board-controls">
+        <button class="btn btn-secondary" onclick="modoDibujo()">✏️ Dibujar</button>
+        <button class="btn btn-secondary" onclick="modoBorrador()">🧽 Borrador</button>
+        <button class="btn btn-secondary" onclick="limpiarPizarron()">🗑 Limpiar</button>
+        <button class="btn btn-primary" onclick="guardarPizarron()">💾 Guardar</button>
+
+        <label>Color:
+          <input type="color" id="colorPicker" class="color-input" value="#000000">
+        </label>
+
+        <label>Grosor:
+          <input type="range" id="grosor" min="2" max="18" value="6">
+        </label>
+      </div>
+    </div>
+
+    <aside class="tips-card">
+      <h3>Ideas de uso</h3>
+      <ul class="tips-list">
+        <li>Hacer operaciones paso a paso.</li>
+        <li>Dibujar fracciones visuales.</li>
+        <li>Explicar proporciones.</li>
+        <li>Marcar vértices en geometría.</li>
+        <li>Resolver ecuaciones.</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+    <!-- ========== VIDEOS ========== -->
+    <section id="videos">
+      <h2 class="section-title">Videos explicativos</h2>
+
+      <div class="videos-grid">
+        <article class="video-card">
+          <div class="video-thumb">Video: Sumas visuales</div>
+          <div class="video-title">Sumas con dibujos</div>
+          <span class="video-badge">Nivel 1</span>
+        </article>
+
+        <article class="video-card">
+          <div class="video-thumb">Video: Fracciones</div>
+          <div class="video-title">Fracciones básicas</div>
+          <span class="video-badge" style="background:#ecfdf3;color:#15803d;">Nivel 2</span>
+        </article>
+
+        <article class="video-card">
+          <div class="video-thumb">Video: Álgebra</div>
+          <div class="video-title">Introducción al álgebra</div>
+          <span class="video-badge" style="background:#fee2e2;color:#b91c1c;">Nivel 3</span>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Proyecto de Programación Multimedia · 2025 · Equipo MatePlay
+  </footer>
+
+  <!-- JS -->
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Restas Básicas | MatePlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+  <!-- NAV -->
+  <header>
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-icon">M</div>
+        <span>MatePlay</span>
+      </div>
+      <div class="nav-links">
+        <a href="../../nivel1.html">Volver al nivel 1</a>
+        <a href="../../logros.html">Logros ⭐</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- TÍTULO -->
+    <section>
+      <h1 class="section-title">Restas Básicas</h1>
+      <p class="section-subtitle">
+        Practica restas fáciles entre números del 0 al 20.  
+        Las restas siempre tendrán resultados positivos o cero.
+      </p>
+    </section>
+
+    <!-- ACTIVIDAD -->
+    <section>
+      <div class="game-container">
+        <!-- Columna izquierda → juego -->
+        <div>
+          <span class="game-level-label">Nivel 1 · Restas</span>
+
+          <p id="resta-pregunta" class="game-question">
+            10 - 3 = ?
+          </p>
+
+          <div id="resta-opciones" class="game-options">
+            <!-- Se llena por JS -->
+          </div>
+
+          <p id="resta-resultado" class="game-result"></p>
+
+          <button class="btn btn-primary" onclick="nuevaResta()">
+            🔁 Nueva resta
+          </button>
+        </div>
+
+        <!-- Columna derecha → instructivo -->
+        <aside class="game-side">
+          <p class="game-side-title">Instrucciones</p>
+          <p>Observa el ejercicio que aparece arriba.</p>
+          <p>Elige una de las respuestas.</p>
+          <p>Si es incorrecta, vuelve a intentar hasta que aciertes.</p>
+          <p>¡Puedes usar el pizarrón virtual del menú para ayudarte!</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- BOTÓN VOLVER -->
+    <section style="margin-top: 2rem;">
+      <button class="btn btn-secondary" onclick="window.location.href='../nivel1.html'">
+        ⬅ Volver al Nivel 1
+      </button>
+    </section>
+  </main>
+
+  <footer>
+    MatePlay · Actividad de Restas · 2025
+  </footer>
+
+  <!-- ⭐ SISTEMA DE LOGROS -->
+  <script src="../../js/logros.js"></script>
+
+  <!-- ⭐ POPUP BONITO -->
+  <script>
+    function popupEstrella() {
+      let pop = document.createElement("div");
+      pop.textContent = "⭐ ¡Ganaste una estrella!";
+      pop.style.position = "fixed";
+      pop.style.bottom = "25px";
+      pop.style.right = "25px";
+      pop.style.padding = "15px 20px";
+      pop.style.background = "#4f46e5";
+      pop.style.color = "white";
+      pop.style.borderRadius = "10px";
+      pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+      pop.style.zIndex = "999";
+      pop.style.opacity = "1";
+      pop.style.transition = "opacity 1s ease";
+
+      document.body.appendChild(pop);
+
+      setTimeout(() => {
+        pop.style.opacity = "0";
+        setTimeout(() => pop.remove(), 1000);
+      }, 1500);
+    }
+  </script>
+
+  <!-- ⭐ SCRIPT DE LA ACTIVIDAD -->
+  <script>
+    let restaCorrecta = 0;
+
+    function nuevaResta() {
+      let a = Math.floor(Math.random() * 21);
+      let b = Math.floor(Math.random() * 21);
+
+      while (b > a) {
+        b = Math.floor(Math.random() * 21);
+      }
+
+      restaCorrecta = a - b;
+      document.getElementById("resta-pregunta").textContent = `${a} - ${b} = ?`;
+
+      const resultadoTexto = document.getElementById("resta-resultado");
+      resultadoTexto.textContent = "";
+      resultadoTexto.className = "game-result";
+
+      const opciones = new Set();
+      opciones.add(restaCorrecta);
+
+      while (opciones.size < 4) {
+        let desvio = Math.floor(Math.random() * 11) - 5;
+        let posible = restaCorrecta + desvio;
+        if (posible >= 0) opciones.add(posible);
+      }
+
+      const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
+      const contenedor = document.getElementById("resta-opciones");
+      contenedor.innerHTML = "";
+
+      mezcladas.forEach(num => {
+        const btn = document.createElement("button");
+        btn.className = "game-option";
+        btn.textContent = num;
+        btn.onclick = () => evaluarResta(num);
+        contenedor.appendChild(btn);
+      });
+    }
+
+    function evaluarResta(num) {
+      const texto = document.getElementById("resta-resultado");
+
+      if (num === restaCorrecta) {
+        texto.textContent = "¡Correcto! 🎉";
+        texto.className = "game-result ok";
+
+        // ⭐ SUMAR ESTRELLA SI EXISTE EL SISTEMA
+        if (typeof sumarEstrella === "function") {
+          sumarEstrella("nivel1_restas");
+        }
+
+        popupEstrella();
+
+      } else {
+        texto.textContent = "Intenta de nuevo ❌";
+        texto.className = "game-result bad";
+      }
+    }
+
+    nuevaResta();
+  </script>
+
+</body>
+</html>

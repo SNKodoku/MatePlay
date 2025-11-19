@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Sumas Básicas | MatePlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+  <header>
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-icon">M</div>
+        <span>MatePlay</span>
+      </div>
+
+      <div class="nav-links">
+        <a href="../../nivel1.html">Volver al nivel 1</a>
+        <a href="../../logros.html">Logros ⭐</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h1 class="section-title">Sumas Básicas</h1>
+      <p class="section-subtitle">
+        Resuelve las sumas que aparecen en pantalla.  
+        Los números van del 0 al 20, pensados para niños de primaria baja.
+      </p>
+    </section>
+
+    <section>
+      <div class="game-container">
+        <div>
+          <span class="game-level-label">Nivel 1 · Sumas</span>
+
+          <p id="suma-pregunta" class="game-question">
+            3 + 4 = ?
+          </p>
+
+          <div id="suma-opciones" class="game-options">
+            <!-- se llena por JS -->
+          </div>
+
+          <p id="suma-resultado" class="game-result"></p>
+
+          <button class="btn btn-primary" onclick="nuevaSuma()">
+            🔁 Nueva suma
+          </button>
+        </div>
+
+        <aside class="game-side">
+          <p class="game-side-title">Instrucciones</p>
+          <p>Elige la respuesta correcta entre las opciones.</p>
+          <p>Si te equivocas, vuelve a intentarlo.</p>
+          <p>¡Sigue practicando para mejorar tu velocidad!</p>
+        </aside>
+      </div>
+    </section>
+
+    <section style="margin-top: 2rem;">
+      <button class="btn btn-secondary" onclick="window.location.href='../nivel1.html'">
+        ⬅ Volver al Nivel 1
+      </button>
+    </section>
+  </main>
+
+  <footer>
+    MatePlay · Actividad de Sumas · 2025
+  </footer>
+
+  <!-- ⭐ SISTEMA DE LOGROS -->
+  <script src="../../js/logros.js"></script>
+
+  <!-- ⭐ POPUP DE ESTRELLA -->
+  <script>
+    function popupEstrella() {
+      let pop = document.createElement("div");
+      pop.textContent = "⭐ ¡Ganaste una estrella!";
+      pop.style.position = "fixed";
+      pop.style.bottom = "25px";
+      pop.style.right = "25px";
+      pop.style.padding = "15px 20px";
+      pop.style.background = "#4f46e5";
+      pop.style.color = "white";
+      pop.style.borderRadius = "10px";
+      pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+      pop.style.zIndex = "999";
+      pop.style.opacity = "1";
+      pop.style.transition = "opacity 1s ease";
+
+      document.body.appendChild(pop);
+
+      setTimeout(() => {
+        pop.style.opacity = "0";
+        setTimeout(() => pop.remove(), 1000);
+      }, 1500);
+    }
+  </script>
+
+  <!-- ⭐ SCRIPT DE LA ACTIVIDAD -->
+  <script>
+    let sumaCorrecta = 0;
+
+    function nuevaSuma() {
+      let a = Math.floor(Math.random() * 21); 
+      let b = Math.floor(Math.random() * 21);
+      sumaCorrecta = a + b;
+
+      document.getElementById("suma-pregunta").textContent = `${a} + ${b} = ?`;
+      document.getElementById("suma-resultado").textContent = "";
+      document.getElementById("suma-resultado").className = "game-result";
+
+      const opciones = new Set();
+      opciones.add(sumaCorrecta);
+
+      while (opciones.size < 4) {
+        let desvio = Math.floor(Math.random() * 11) - 5;
+        let posible = sumaCorrecta + desvio;
+        if (posible >= 0) opciones.add(posible);
+      }
+
+      const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
+      const contenedor = document.getElementById("suma-opciones");
+      contenedor.innerHTML = "";
+
+      mezcladas.forEach(num => {
+        const btn = document.createElement("button");
+        btn.className = "game-option";
+        btn.textContent = num;
+        btn.onclick = () => evaluarSuma(num);
+        contenedor.appendChild(btn);
+      });
+    }
+
+    function evaluarSuma(num) {
+      const texto = document.getElementById("suma-resultado");
+
+      if (num === sumaCorrecta) {
+        texto.textContent = "¡Correcto! 🎉";
+        texto.className = "game-result ok";
+
+        // ⭐ SUMAR ESTRELLA SI EL SISTEMA EXISTE
+        if (typeof sumarEstrella === "function") {
+          sumarEstrella("nivel1_sumas");
+        }
+
+        popupEstrella();
+
+      } else {
+        texto.textContent = "Intenta de nuevo ❌";
+        texto.className = "game-result bad";
+      }
+    }
+
+    nuevaSuma();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Problemas Algebraicos | MatePlay</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+
+<!-- NAV -->
+<header>
+  <nav class="nav">
+    <div class="logo">
+      <div class="logo-icon">M</div>
+      <span>MatePlay</span>
+    </div>
+    <div class="nav-links">
+      <a href="../../nivel3.html">Volver al Nivel 3</a>
+      <a href="../../logros.html">Logros ⭐</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <section>
+    <h1 class="section-title">Problemas Algebraicos</h1>
+    <p class="section-subtitle">
+      Lee el problema, tradúcelo a una ecuación y elige el valor correcto de la incógnita.
+    </p>
+  </section>
+
+  <section>
+    <div class="game-container">
+
+      <!-- IZQUIERDA -->
+      <div>
+        <span class="game-level-label">Nivel 3 · Problemas Algebraicos</span>
+
+        <p id="probAlg-texto" class="game-question"></p>
+
+        <div id="probAlg-opciones" class="game-options"></div>
+
+        <p id="probAlg-resultado" class="game-result"></p>
+
+        <button class="btn btn-primary" onclick="nuevoProblemaAlg()">
+          🔄 Nuevo problema
+        </button>
+      </div>
+
+      <!-- DERECHA -->
+      <aside class="game-side">
+        <p class="game-side-title">¿Cómo resolver?</p>
+        <p>Todo problema se puede convertir en una ecuación.</p>
+        <hr>
+        <p><strong>Ejemplo:</strong></p>
+        <p><em>“El doble de un número más 7 es 25.”</em></p>
+        <p>2x + 7 = 25</p>
+        <p>2x = 18 → x = 9</p>
+        <hr>
+        <p>Usa estructuras como:</p>
+        <p><strong>ax + b = c</strong></p>
+        <p><strong>a(x + b) = c</strong></p>
+      </aside>
+
+    </div>
+  </section>
+
+  <section style="margin-top:2rem;">
+    <button class="btn btn-secondary" onclick="window.location.href='../nivel3.html'">
+      ⬅ Volver al Nivel 3
+    </button>
+  </section>
+
+</main>
+
+<footer>
+  MatePlay · Actividad de Problemas Algebraicos · 2025
+</footer>
+
+<!-- ⭐ SISTEMA DE LOGROS -->
+<script src="../../js/logros.js"></script>
+
+<!-- ⭐ POPUP -->
+<script>
+  function popupEstrella() {
+    let pop = document.createElement("div");
+    pop.textContent = "⭐ ¡Ganaste una estrella!";
+    pop.style.position = "fixed";
+    pop.style.bottom = "25px";
+    pop.style.right = "25px";
+    pop.style.padding = "15px 20px";
+    pop.style.background = "#4f46e5";
+    pop.style.color = "white";
+    pop.style.borderRadius = "10px";
+    pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+    pop.style.zIndex = "999";
+    pop.style.opacity = "1";
+    pop.style.transition = "opacity 1s ease";
+
+    document.body.appendChild(pop);
+
+    setTimeout(() => {
+      pop.style.opacity = "0";
+      setTimeout(() => pop.remove(), 1000);
+    }, 1500);
+  }
+</script>
+
+<!-- ⭐ SCRIPT PRINCIPAL -->
+<script>
+  let solucionCorrecta = 0;
+
+  function nuevoProblemaAlg() {
+
+    const problemas = [
+      (x) => ({
+        texto: `El doble de un número más 7 es igual a ${2*x + 7}. ¿Cuál es el número?`,
+        solucion: x
+      }),
+      (x) => ({
+        texto: `Si al triple de un número le restas 4 obtienes ${3*x - 4}. ¿Cuál es el número?`,
+        solucion: x
+      }),
+      (x) => ({
+        texto: `La mitad de un número aumentada en 6 es igual a ${x/2 + 6}. ¿Cuál es el número?`,
+        solucion: x
+      }),
+      (x) => ({
+        texto: `Un número más su doble es igual a ${3*x}. ¿Cuál es el número?`,
+        solucion: x
+      }),
+      (x) => ({
+        texto: `El triple de un número aumentado en 5 es igual a ${3*x + 5}. ¿Cuál es el número?`,
+        solucion: x
+      }),
+      (x) => ({
+        texto: `Si restas 8 a un número obtienes ${x - 8}. ¿Cuál es el número?`,
+        solucion: x
+      })
+    ];
+
+    let x = Math.floor(Math.random() * 20) + 5;
+    let problema = problemas[Math.floor(Math.random() * problemas.length)](x);
+
+    document.getElementById("probAlg-texto").textContent = problema.texto;
+
+    solucionCorrecta = problema.solucion;
+
+    const res = document.getElementById("probAlg-resultado");
+    res.textContent = "";
+    res.className = "game-result";
+
+    generarOpcionesAlg(solucionCorrecta);
+  }
+
+  function generarOpcionesAlg(correcta) {
+    const cont = document.getElementById("probAlg-opciones");
+    cont.innerHTML = "";
+
+    const opciones = new Set([correcta]);
+
+    while (opciones.size < 4) {
+      let desvio = Math.floor(Math.random() * 11) - 5;
+      let posible = correcta + desvio;
+      if (posible > 0) opciones.add(posible);
+    }
+
+    const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
+
+    mezcladas.forEach(num => {
+      const btn = document.createElement("button");
+      btn.className = "game-option";
+      btn.textContent = num;
+      btn.onclick = () => evaluarAlg(num);
+      cont.appendChild(btn);
+    });
+  }
+
+  function evaluarAlg(num) {
+    const res = document.getElementById("probAlg-resultado");
+
+    if (num === solucionCorrecta) {
+      res.textContent = "¡Correcto! 🎉";
+      res.className = "game-result ok";
+
+      if (typeof sumarEstrella === "function") {
+        sumarEstrella("nivel3_problemasAlgebra");
+      }
+
+      popupEstrella();
+
+    } else {
+      res.textContent = "Incorrecto ❌, sigue intentando";
+      res.className = "game-result bad";
+    }
+  }
+
+  nuevoProblemaAlg();
+</script>
+
+</body>
+</html>

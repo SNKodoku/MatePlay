@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Proporciones y Regla de Tres | MatePlay</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+
+<!-- NAV -->
+<header>
+  <nav class="nav">
+    <div class="logo">
+      <div class="logo-icon">M</div>
+      <span>MatePlay</span>
+    </div>
+    <div class="nav-links">
+      <a href="../../nivel3.html">Volver al Nivel 3</a>
+      <a href="../../logros.html">Logros ⭐</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <section>
+    <h1 class="section-title">Proporciones y Regla de Tres</h1>
+    <p class="section-subtitle">
+      Observa las barras y resuelve la proporción.  
+      Actividad ideal para secundaria: visual, práctica y didáctica.
+    </p>
+  </section>
+
+  <section>
+    <div class="game-container">
+
+      <!-- IZQUIERDA -->
+      <div>
+        <span class="game-level-label">Nivel 3 · Proporciones</span>
+
+        <canvas id="propCanvas" width="330" height="260"
+                style="background:#f9fafb;border-radius:12px;margin-bottom:1rem;">
+        </canvas>
+
+        <p id="propPregunta" class="game-question"></p>
+
+        <div id="propOpciones" class="game-options"></div>
+
+        <p id="propResultado" class="game-result"></p>
+
+        <button class="btn btn-primary" onclick="nuevaProporcion()">
+          🔄 Nueva proporción
+        </button>
+      </div>
+
+      <!-- DERECHA -->
+      <aside class="game-side">
+        <p class="game-side-title">¿Cómo resolver proporciones?</p>
+        <p><strong>Regla de tres:</strong></p>
+        <p>Si A → B</p>
+        <p>y C → X</p>
+        <p>Entonces X = (B × C) / A</p>
+
+        <hr>
+
+        <p>Ejemplo:</p>
+        <p>3 barras valen 12</p>
+        <p>5 barras valen X</p>
+        <p>X = (12 × 5) / 3 = 20</p>
+      </aside>
+
+    </div>
+  </section>
+
+  <section style="margin-top:2rem;">
+    <button class="btn btn-secondary" onclick="window.location.href='../nivel3.html'">
+      ⬅ Volver al Nivel 3
+    </button>
+  </section>
+
+</main>
+
+<footer>
+  MatePlay · Actividad de Proporciones · 2025
+</footer>
+
+<!-- ⭐ SISTEMA DE LOGROS -->
+<script src="../../js/logros.js"></script>
+
+<!-- ⭐ POPUP DE ESTRELLA -->
+<script>
+  function popupEstrella() {
+    let pop = document.createElement("div");
+    pop.textContent = "⭐ ¡Ganaste una estrella!";
+    pop.style.position = "fixed";
+    pop.style.bottom = "25px";
+    pop.style.right = "25px";
+    pop.style.padding = "15px 20px";
+    pop.style.background = "#4f46e5";
+    pop.style.color = "white";
+    pop.style.borderRadius = "10px";
+    pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+    pop.style.zIndex = "999";
+    pop.style.opacity = "1";
+    pop.style.transition = "opacity 1s ease";
+
+    document.body.appendChild(pop);
+
+    setTimeout(() => {
+      pop.style.opacity = "0";
+      setTimeout(() => pop.remove(), 1000);
+    }, 1500);
+  }
+</script>
+
+<!-- ⭐ SCRIPT PRINCIPAL -->
+<script>
+  const canvas = document.getElementById("propCanvas");
+  const ctx = canvas.getContext("2d");
+
+  let resultadoCorrecto = 0;
+
+  function nuevaProporcion() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const barrasA = Math.floor(Math.random() * 4) + 2;
+    const barrasC = Math.floor(Math.random() * 4) + 2;
+
+    const valorA = Math.floor(Math.random() * 20) + 5;
+
+    resultadoCorrecto = Math.round((valorA * barrasC) / barrasA);
+
+    dibujarBarras(40, 50, barrasA, "#3b82f6");
+    ctx.fillStyle = "#111827";
+    ctx.fillText(`${barrasA} barras = ${valorA}`, 40, 40);
+
+    dibujarBarras(40, 150, barrasC, "#f97316");
+    ctx.fillStyle = "#111827";
+    ctx.fillText(`${barrasC} barras = ?`, 40, 140);
+
+    document.getElementById("propPregunta").textContent =
+      `Si ${barrasA} barras valen ${valorA}, ¿cuánto valen ${barrasC} barras?`;
+
+    generarOpciones(resultadoCorrecto);
+    document.getElementById("propResultado").textContent = "";
+  }
+
+  function dibujarBarras(x, y, cantidad, color) {
+    for (let i = 0; i < cantidad; i++) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x + i * 25, y, 20, 50);
+      ctx.strokeStyle = "#1f2937";
+      ctx.strokeRect(x + i * 25, y, 20, 50);
+    }
+  }
+
+  function generarOpciones(correcta) {
+    const cont = document.getElementById("propOpciones");
+    cont.innerHTML = "";
+
+    const opciones = new Set([correcta]);
+
+    while (opciones.size < 4) {
+      let desvio = Math.floor(Math.random() * 15) - 7;
+      let posible = correcta + desvio;
+      if (posible > 0) opciones.add(posible);
+    }
+
+    const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
+
+    mezcladas.forEach(op => {
+      const btn = document.createElement("button");
+      btn.className = "game-option";
+      btn.textContent = op;
+      btn.onclick = () => evaluar(op);
+      cont.appendChild(btn);
+    });
+  }
+
+  function evaluar(num) {
+    const res = document.getElementById("propResultado");
+
+    if (num === resultadoCorrecto) {
+      res.textContent = "¡Correcto! 🎉";
+      res.className = "game-result ok";
+
+      if (typeof sumarEstrella === "function") {
+        sumarEstrella("nivel3_proporciones");
+      }
+
+      popupEstrella();
+
+    } else {
+      res.textContent = "Incorrecto ❌";
+      res.className = "game-result bad";
+    }
+  }
+
+  nuevaProporcion();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Porcentajes Visuales | MatePlay</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+  <!-- NAV -->
+  <header>
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-icon">M</div>
+        <span>MatePlay</span>
+      </div>
+      <div class="nav-links">
+        <a href="../../nivel2.html">Volver al Nivel 2</a>
+        <a href="../../logros.html">Logros ⭐</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- TÍTULO -->
+    <section>
+      <h1 class="section-title">Porcentajes Visuales</h1>
+      <p class="section-subtitle">
+        Observa la barra y elige qué porcentaje representa.  
+        Actividad ideal para aprender porcentajes de forma visual.
+      </p>
+    </section>
+
+    <!-- ACTIVIDAD -->
+    <section>
+      <div class="game-container">
+
+        <!-- IZQUIERDA -->
+        <div>
+          <span class="game-level-label">Nivel 2 · Porcentajes</span>
+
+          <!-- Barra -->
+          <div style="background:#e5e7eb;border-radius:12px;height:40px;overflow:hidden;margin-bottom:1rem;">
+            <div id="barraPorcentaje" style="height:100%;width:50%;background:#4f46e5;transition:0.4s;"></div>
+          </div>
+
+          <!-- Opciones -->
+          <div id="opc-porcentaje" class="game-options"></div>
+
+          <!-- Resultado -->
+          <p id="resultado-porcentaje" class="game-result"></p>
+
+          <!-- Nuevo -->
+          <button class="btn btn-primary" onclick="nuevoPorcentaje()">
+            🔄 Nuevo porcentaje
+          </button>
+        </div>
+
+        <!-- TIPS -->
+        <aside class="game-side">
+          <p class="game-side-title">¿Qué es un porcentaje?</p>
+
+          <p>Un porcentaje es una forma de decir "de cada 100".</p>
+          <p>Ejemplo: 30% significa 30 de cada 100.</p>
+          <p>La barra azul representa visualmente esa parte del total.</p>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- VOLVER -->
+    <section style="margin-top:2rem;">
+      <button class="btn btn-secondary" onclick="window.location.href='../nivel2.html'">
+        ⬅ Volver al Nivel 2
+      </button>
+    </section>
+
+  </main>
+
+  <footer>
+    MatePlay · Actividad de Porcentajes · 2025
+  </footer>
+
+  <!-- ⭐ SISTEMA DE LOGROS -->
+  <script src="../../js/logros.js"></script>
+
+  <!-- ⭐ POPUP -->
+  <script>
+    function popupEstrella() {
+      let pop = document.createElement("div");
+      pop.textContent = "⭐ ¡Ganaste una estrella!";
+      pop.style.position = "fixed";
+      pop.style.bottom = "25px";
+      pop.style.right = "25px";
+      pop.style.padding = "15px 20px";
+      pop.style.background = "#4f46e5";
+      pop.style.color = "white";
+      pop.style.borderRadius = "10px";
+      pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+      pop.style.zIndex = "999";
+      pop.style.opacity = "1";
+      pop.style.transition = "opacity 1s ease";
+
+      document.body.appendChild(pop);
+
+      setTimeout(() => {
+        pop.style.opacity = "0";
+        setTimeout(() => pop.remove(), 1000);
+      }, 1500);
+    }
+  </script>
+
+  <!-- ⭐ SCRIPT DE LA ACTIVIDAD -->
+  <script>
+    let porcentajeCorrecto = 0;
+
+    function nuevoPorcentaje() {
+      const porcentajes = [10,20,30,40,50,60,70,80,90];
+
+      porcentajeCorrecto = porcentajes[Math.floor(Math.random() * porcentajes.length)];
+
+      // Actualizar barra
+      document.getElementById("barraPorcentaje").style.width = porcentajeCorrecto + "%";
+
+      const cont = document.getElementById("opc-porcentaje");
+      cont.innerHTML = "";
+
+      const res = document.getElementById("resultado-porcentaje");
+      res.textContent = "";
+      res.className = "game-result";
+
+      const opciones = new Set([porcentajeCorrecto]);
+
+      while (opciones.size < 4) {
+        opciones.add(porcentajes[Math.floor(Math.random() * porcentajes.length)]);
+      }
+
+      const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
+
+      mezcladas.forEach(p => {
+        const btn = document.createElement("button");
+        btn.className = "game-option";
+        btn.textContent = p + "%";
+        btn.onclick = () => evaluarPorcentaje(p);
+        cont.appendChild(btn);
+      });
+    }
+
+    function evaluarPorcentaje(num) {
+      const res = document.getElementById("resultado-porcentaje");
+
+      if (num === porcentajeCorrecto) {
+        res.textContent = "¡Correcto! 🎉";
+        res.className = "game-result ok";
+
+        // ⭐ SUMAR ESTRELLA
+        if (typeof sumarEstrella === "function") {
+          sumarEstrella("nivel2_porcentajes");
+        }
+
+        popupEstrella();
+
+      } else {
+        res.textContent = "Respuesta incorrecta ❌";
+        res.className = "game-result bad";
+      }
+    }
+
+    nuevoPorcentaje();
+  </script>
+
+</body>
+</html>

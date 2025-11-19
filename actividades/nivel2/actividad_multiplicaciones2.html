@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Multiplicaciones Básicas | MatePlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+  <!-- NAV -->
+  <header>
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-icon">M</div>
+        <span>MatePlay</span>
+      </div>
+
+      <div class="nav-links">
+        <a href="../../nivel2.html">Volver al Nivel 2</a>
+        <a href="../../logros.html">Logros ⭐</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- TÍTULO DE LA ACTIVIDAD -->
+    <section>
+      <h1 class="section-title">Multiplicaciones Básicas</h1>
+      <p class="section-subtitle">
+        Practica las tablas del 2 al 10.  
+        Ideal para estudiantes de primaria alta (10–12 años).
+      </p>
+    </section>
+
+    <!-- ACTIVIDAD INTERACTIVA -->
+    <section>
+      <div class="game-container">
+        
+        <!-- Columna izquierda (juego) -->
+        <div>
+          <span class="game-level-label">Nivel 2 · Multiplicación</span>
+
+          <!-- Pregunta -->
+          <p id="multi-pregunta" class="game-question">3 × 4 = ?</p>
+
+          <!-- Opciones -->
+          <div id="multi-opciones" class="game-options"></div>
+
+          <!-- Resultado -->
+          <p id="multi-resultado" class="game-result"></p>
+
+          <!-- Botón nuevo -->
+          <button class="btn btn-primary" onclick="nuevaMultiplicacion()">
+            🔁 Nueva multiplicación
+          </button>
+        </div>
+
+        <!-- Columna derecha (tips) -->
+        <aside class="game-side">
+          <p class="game-side-title">Instrucciones</p>
+          <p>1. Observa los números de la multiplicación.</p>
+          <p>2. Piensa cuántas veces se repite el número.</p>
+          <p>3. Elige la respuesta correcta entre las opciones.</p>
+          <p>4. Usa el pizarrón virtual si necesitas ayudarte.</p>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- BOTÓN VOLVER -->
+    <section style="margin-top: 2rem;">
+      <button class="btn btn-secondary" onclick="window.location.href='../nivel2.html'">
+        ⬅ Volver al Nivel 2
+      </button>
+    </section>
+
+  </main>
+
+  <footer>
+    MatePlay · Actividad de Multiplicaciones · 2025
+  </footer>
+
+  <!-- ⭐ CONECTAR SISTEMA DE LOGROS -->
+  <script src="../../js/logros.js"></script>
+
+  <!-- ⭐ POPUP -->
+  <script>
+    function popupEstrella() {
+      let pop = document.createElement("div");
+      pop.textContent = "⭐ ¡Ganaste una estrella!";
+      pop.style.position = "fixed";
+      pop.style.bottom = "25px";
+      pop.style.right = "25px";
+      pop.style.padding = "15px 20px";
+      pop.style.background = "#4f46e5";
+      pop.style.color = "white";
+      pop.style.borderRadius = "10px";
+      pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+      pop.style.zIndex = "999";
+      pop.style.opacity = "1";
+      pop.style.transition = "opacity 1s ease";
+
+      document.body.appendChild(pop);
+
+      setTimeout(() => {
+        pop.style.opacity = "0";
+        setTimeout(() => pop.remove(), 1000);
+      }, 1500);
+    }
+  </script>
+
+  <!-- ⭐ SCRIPT DEL JUEGO -->
+  <script>
+    let multiCorrecta = 0;
+
+    function nuevaMultiplicacion() {
+      let a = Math.floor(Math.random() * 9) + 2; // 2–10
+      let b = Math.floor(Math.random() * 9) + 2;
+
+      multiCorrecta = a * b;
+
+      document.getElementById("multi-pregunta").textContent =
+        `${a} × ${b} = ?`;
+
+      const res = document.getElementById("multi-resultado");
+      res.textContent = "";
+      res.className = "game-result";
+
+      const opciones = new Set();
+      opciones.add(multiCorrecta);
+
+      while (opciones.size < 4) {
+        let desvio = Math.floor(Math.random() * 13) - 6; // -6 a +6
+        let posible = multiCorrecta + desvio;
+        if (posible > 0) opciones.add(posible);
+      }
+
+      const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
+      const contenedor = document.getElementById("multi-opciones");
+      contenedor.innerHTML = "";
+
+      mezcladas.forEach(num => {
+        const btn = document.createElement("button");
+        btn.className = "game-option";
+        btn.textContent = num;
+        btn.onclick = () => evaluarMultiplicacion(num);
+        contenedor.appendChild(btn);
+      });
+    }
+
+    function evaluarMultiplicacion(num) {
+      const res = document.getElementById("multi-resultado");
+
+      if (num === multiCorrecta) {
+        res.textContent = "¡Correcto! 🎉";
+        res.className = "game-result ok";
+
+        // ⭐ SUMAR ESTRELLA
+        if (typeof sumarEstrella === "function") {
+          sumarEstrella("nivel2_multiplicaciones");
+        }
+
+        popupEstrella();
+
+      } else {
+        res.textContent = "Sigue intentando ❌";
+        res.className = "game-result bad";
+      }
+    }
+
+    nuevaMultiplicacion();
+  </script>
+
+</body>
+</html>

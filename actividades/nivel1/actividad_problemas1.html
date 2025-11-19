@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Problemas Básicos | MatePlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-icon">M</div>
+        <span>MatePlay</span>
+      </div>
+      <div class="nav-links">
+        <a href="../../nivel1.html">Volver al Nivel 1</a>
+        <a href="../../logros.html">Logros ⭐</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h1 class="section-title">Problemas Sencillos</h1>
+      <p class="section-subtitle">
+        Lee con atención cada problema y elige la respuesta correcta.  
+        Los problemas están pensados para niños de primaria baja.
+      </p>
+    </section>
+
+    <section>
+      <div class="game-container">
+
+        <!-- Columna izquierda: problema -->
+        <div>
+          <span class="game-level-label">Nivel 1 · Problemas</span>
+
+          <!-- Imagen del problema -->
+          <div id="problema-imagen" 
+               style="background:#f3f4f6; border-radius:12px; 
+                      height:180px; margin-bottom:1rem; 
+                      display:flex; align-items:center; justify-content:center; 
+                      color:#6b7280; font-size:0.9rem;">
+            Imagen del problema
+          </div>
+
+          <!-- Pregunta -->
+          <p id="problema-texto" class="game-question">
+            Cargando problema...
+          </p>
+
+          <!-- Opciones -->
+          <div id="problema-opciones" class="game-options"></div>
+
+          <!-- Resultado -->
+          <p id="problema-resultado" class="game-result"></p>
+
+          <!-- Botón nuevo -->
+          <button class="btn btn-primary" onclick="nuevoProblema()">
+            🔄 Nuevo problema
+          </button>
+        </div>
+
+        <!-- Columna derecha: instrucciones -->
+        <aside class="game-side">
+          <p class="game-side-title">¿Cómo resolver estos problemas?</p>
+          <p>
+            1. Lee la historia con calma.  
+            2. Piensa qué operación debes hacer (suma o resta).  
+            3. Usa el pizarrón virtual si lo necesitas.  
+            4. Elige la opción correcta.
+          </p>
+        </aside>
+
+      </div>
+    </section>
+
+    <section style="margin-top: 2rem;">
+      <button class="btn btn-secondary" onclick="window.location.href='../nivel1.html'">
+        ⬅ Volver al Nivel 1
+      </button>
+    </section>
+
+  </main>
+
+  <footer>
+    MatePlay · Actividad de Problemas · 2025
+  </footer>
+
+  <!-- SCRIPT DE PROBLEMAS -->
+  <script src="../../js/logros.js"></script>
+
+<script>
+  // Lista de problemas de primaria baja
+  const problemas = [
+    {
+      texto: "Juan tenía 5 dulces y su mamá le dio 3 más. ¿Cuántos dulces tiene ahora?",
+      respuesta: 8,
+      opciones: [6, 8, 9, 7],
+      imagen: "🍬"
+    },
+    {
+      texto: "Ana tenía 10 globos. Se le volaron 4. ¿Cuántos globos le quedan?",
+      respuesta: 6,
+      opciones: [4, 6, 8, 5],
+      imagen: "🎈"
+    },
+    {
+      texto: "En una caja había 7 lápices. Pedro metió 2 más. ¿Cuántos lápices hay ahora?",
+      respuesta: 9,
+      opciones: [8, 6, 9, 10],
+      imagen: "✏️"
+    },
+    {
+      texto: "Luis tenía 12 canicas. Le regaló 5 a su amigo. ¿Cuántas canicas se quedó?",
+      respuesta: 7,
+      opciones: [7, 5, 6, 8],
+      imagen: "🔵"
+    },
+    {
+      texto: "En una granja había 9 gallinas. Llegaron 3 más. ¿Cuántas gallinas hay ahora?",
+      respuesta: 12,
+      opciones: [10, 12, 13, 11],
+      imagen: "🐔"
+    }
+  ];
+
+  let problemaActual = null;
+
+  // ---------------------------
+  // POPUP BONITO (GANAR ESTRELLA)
+  // ---------------------------
+  function mostrarPopupEstrella() {
+    let pop = document.createElement("div");
+    pop.textContent = "⭐ ¡Ganaste una estrella!";
+    pop.style.position = "fixed";
+    pop.style.bottom = "30px";
+    pop.style.right = "30px";
+    pop.style.padding = "15px 20px";
+    pop.style.background = "#4f46e5";
+    pop.style.color = "white";
+    pop.style.borderRadius = "10px";
+    pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
+    pop.style.fontSize = "1rem";
+    pop.style.zIndex = "999";
+    pop.style.opacity = "1";
+    pop.style.transition = "opacity 1s ease";
+
+    document.body.appendChild(pop);
+
+    setTimeout(() => {
+      pop.style.opacity = "0";
+      setTimeout(() => pop.remove(), 1000);
+    }, 1500);
+  }
+
+  // Crear nuevo problema
+  function nuevoProblema() {
+    problemaActual = problemas[Math.floor(Math.random() * problemas.length)];
+
+    document.getElementById("problema-imagen").textContent = problemaActual.imagen;
+    document.getElementById("problema-texto").textContent = problemaActual.texto;
+
+    const res = document.getElementById("problema-resultado");
+    res.textContent = "";
+    res.className = "game-result";
+
+    const cont = document.getElementById("problema-opciones");
+    cont.innerHTML = "";
+
+    const opcionesBarajadas = problemaActual.opciones.sort(() => Math.random() - 0.5);
+
+    opcionesBarajadas.forEach(op => {
+      const btn = document.createElement("button");
+      btn.className = "game-option";
+      btn.textContent = op;
+
+      btn.onclick = () => evaluarProblema(op);
+      cont.appendChild(btn);
+    });
+  }
+
+  // Evaluar respuesta
+  function evaluarProblema(op) {
+    const res = document.getElementById("problema-resultado");
+
+    if (op === problemaActual.respuesta) {
+      res.textContent = "¡Correcto! 🎉";
+      res.className = "game-result ok";
+
+      // ⭐⭐ AGREGAR ESTRELLA ⭐⭐
+      agregarEstrella(1);
+      mostrarPopupEstrella();
+
+    } else {
+      res.textContent = "Sigue intentando ❌";
+      res.className = "game-result bad";
+    }
+  }
+
+  nuevoProblema();
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Fracciones Visuales | MatePlay</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+  <!-- NAV -->
+  <header>
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-icon">M</div>
+        <span>MatePlay</span>
+      </div>
+      <div class="nav-links">
+        <a href="../../nivel2.html">Volver al Nivel 2</a>
+        <a href="../../logros.html">Logros ⭐</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- TÍTULO -->
+    <section>
+      <h1 class="section-title">Fracciones Visuales</h1>
+      <p class="section-subtitle">
+        Observa la pizza y elige qué fracción está coloreada.  
+        Actividad ideal para aprender fracciones de forma visual y divertida.
+      </p>
+    </section>
+
+    <!-- ACTIVIDAD -->
+    <section>
+      <div class="game-container">
+
+        <!-- LADO IZQUIERDO: CANVAS + OPCIONES -->
+        <div>
+          <span class="game-level-label">Nivel 2 · Fracciones</span>
+
+          <!-- CANVAS DE LA PIZZA -->
+          <canvas id="pizzaCanvas" width="260" height="260" 
+                  style="background:#f9fafb;border-radius:12px;margin-bottom:1rem;">
+          </canvas>
+
+          <!-- Opciones -->
+          <div id="frac-opciones" class="game-options"></div>
+
+          <!-- Resultado -->
+          <p id="frac-resultado" class="game-result"></p>
+
+          <button class="btn btn-primary" onclick="nuevaFraccion()">
+            🔄 Nueva fracción
+          </button>
+        </div>
+
+        <!-- LADO DERECHO: TIPS -->
+        <aside class="game-side">
+          <p class="game-side-title">¿Cómo entender fracciones?</p>
+          <p>Una fracción representa partes de un todo.</p>
+          <p>Ejemplo: 1/4 significa 1 parte de un total de 4.</p>
+          <p>Usa el color de la pizza para identificar cuántas partes están sombreadas.</p>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- VOLVER -->
+    <section style="margin-top:2rem;">
+      <button class="btn btn-secondary" onclick="window.location.href='../nivel2.html'">
+        ⬅ Volver al Nivel 2
+      </button>
+    </section>
+  </main>
+
+  <footer>
+    MatePlay · Actividad de Fracciones · 2025
+  </footer>
+
+  <!-- ⭐ SISTEMA DE LOGROS -->
+  <script src="../../js/logros.js"></script>
+
+  <!-- ⭐ POPUP DE ESTRELLA -->
+  <script>
+    function popupEstrella() {
+      let pop = document.createElement("div");
+      pop.textContent = "⭐ ¡Ganaste una estrella!";
+      pop.style.position = "fixed";
+      pop.style.bottom = "25px";
+      pop.style.right = "25px";
+      pop.style.padding = "15px 20px";
+      pop.style.background = "#4f46e5";
+      pop.style.color = "white";
+      pop.style.borderRadius = "10px";
+      pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+      pop.style.zIndex = "999";
+      pop.style.opacity = "1";
+      pop.style.transition = "opacity 1s ease";
+
+      document.body.appendChild(pop);
+
+      setTimeout(() => {
+        pop.style.opacity = "0";
+        setTimeout(() => pop.remove(), 1000);
+      }, 1500);
+    }
+  </script>
+
+  <!-- ⭐ SCRIPT DE LA ACTIVIDAD -->
+  <script>
+    const canvas = document.getElementById('pizzaCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let fraccionCorrecta = "";
+
+    function nuevaFraccion() {
+      const opcionesPosibles = [
+        "1/2", "1/3", "2/3",
+        "1/4", "2/4", "3/4"
+      ];
+
+      // Elegimos una fracción aleatoria
+      fraccionCorrecta = opcionesPosibles[Math.floor(Math.random() * opcionesPosibles.length)];
+
+      const [num, den] = fraccionCorrecta.split("/").map(Number);
+
+      dibujarPizza(num, den);
+
+      // Crear opciones
+      const cont = document.getElementById("frac-opciones");
+      cont.innerHTML = "";
+
+      const opcionesMezcladas = [...opcionesPosibles].sort(() => Math.random() - 0.5);
+
+      opcionesMezcladas.forEach(f => {
+        const btn = document.createElement("button");
+        btn.className = "game-option";
+        btn.textContent = f;
+        btn.onclick = () => evaluarFraccion(f);
+        cont.appendChild(btn);
+      });
+
+      // Limpiar resultado
+      const res = document.getElementById("frac-resultado");
+      res.textContent = "";
+      res.className = "game-result";
+    }
+
+    function dibujarPizza(numerador, denominador) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const r = 110;
+
+      // Base de la pizza
+      ctx.beginPath();
+      ctx.fillStyle = "#fde68a";
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fill();
+
+      const angulo = (Math.PI * 2) / denominador;
+
+      // Porciones sombreadas
+      for (let i = 0; i < numerador; i++) {
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.fillStyle = "#f87171";
+        ctx.arc(cx, cy, r, i * angulo, (i + 1) * angulo);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Líneas divisorias
+      for (let i = 0; i < denominador; i++) {
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.strokeStyle = "#374151";
+        ctx.lineWidth = 2;
+        ctx.arc(cx, cy, r, i * angulo, (i + 1) * angulo);
+        ctx.stroke();
+      }
+    }
+
+    function evaluarFraccion(f) {
+      const res = document.getElementById("frac-resultado");
+
+      if (f === fraccionCorrecta) {
+        res.textContent = "¡Correcto! 🎉";
+        res.className = "game-result ok";
+
+        // ⭐ SUMAR ESTRELLA
+        if (typeof sumarEstrella === "function") {
+          sumarEstrella("nivel2_fracciones");
+        }
+
+        popupEstrella();
+
+      } else {
+        res.textContent = "Incorrecto, intenta otra vez ❌";
+        res.className = "game-result bad";
+      }
+    }
+
+    nuevaFraccion();
+  </script>
+
+</body>
+</html>

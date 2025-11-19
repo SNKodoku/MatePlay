@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividad: Ecuaciones Avanzadas (ax - b = cx + d) | MatePlay</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+
+<!-- NAV -->
+<header>
+  <nav class="nav">
+    <div class="logo">
+      <div class="logo-icon">M</div>
+      <span>MatePlay</span>
+    </div>
+    <div class="nav-links">
+      <a href="../../nivel3.html">Volver al Nivel 3</a>
+      <a href="../../logros.html">Logros ⭐</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <section>
+    <h1 class="section-title">Ecuaciones Avanzadas</h1>
+    <p class="section-subtitle">
+      Resuelve ecuaciones del tipo <strong>ax - b = cx + d</strong>.  
+      Actividad avanzada ideal para tercero de secundaria o prepa.
+    </p>
+  </section>
+
+  <section>
+    <div class="game-container">
+
+      <!-- IZQUIERDA -->
+      <div>
+        <span class="game-level-label">Nivel 3 · Álgebra Avanzada</span>
+
+        <p id="ecuAv-texto" class="game-question"></p>
+
+        <div id="ecuAv-opciones" class="game-options"></div>
+
+        <p id="ecuAv-resultado" class="game-result"></p>
+
+        <button class="btn btn-primary" onclick="nuevaEcuacionAv()">
+          🔁 Nueva ecuación
+        </button>
+      </div>
+
+      <!-- DERECHA -->
+      <aside class="game-side">
+        <p class="game-side-title">¿Cómo resolver?</p>
+        <p>1. Pasa las x al mismo lado: <strong>ax - cx</strong></p>
+        <p>2. Pasa las constantes al otro lado: <strong>d + b</strong></p>
+        <p>3. Simplifica:</p>
+        <p><strong>(a - c)x = d + b</strong></p>
+        <p><strong>x = (d + b) / (a - c)</strong></p>
+      </aside>
+
+    </div>
+  </section>
+
+  <section style="margin-top:2rem;">
+    <button class="btn btn-secondary" onclick="window.location.href='../nivel3.html'">
+      ⬅ Volver al Nivel 3
+    </button>
+  </section>
+
+</main>
+
+<footer>
+  MatePlay · Actividad de Ecuaciones Avanzadas · 2025
+</footer>
+
+<!-- ⭐ SISTEMA DE LOGROS -->
+<script src="../../js/logros.js"></script>
+
+<!-- ⭐ POPUP -->
+<script>
+  function popupEstrella() {
+    let pop = document.createElement("div");
+    pop.textContent = "⭐ ¡Ganaste una estrella!";
+    pop.style.position = "fixed";
+    pop.style.bottom = "25px";
+    pop.style.right = "25px";
+    pop.style.padding = "15px 20px";
+    pop.style.background = "#4f46e5";
+    pop.style.color = "white";
+    pop.style.borderRadius = "10px";
+    pop.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+    pop.style.zIndex = "999";
+    pop.style.opacity = "1";
+    pop.style.transition = "opacity 1s ease";
+
+    document.body.appendChild(pop);
+
+    setTimeout(() => {
+      pop.style.opacity = "0";
+      setTimeout(() => pop.remove(), 1000);
+    }, 1500);
+  }
+</script>
+
+<!-- ⭐ LÓGICA DE LA ACTIVIDAD -->
+<script>
+  let solucionCorrecta = 0;
+
+  function nuevaEcuacionAv() {
+
+    let a = Math.floor(Math.random() * 8) + 2;   // 2–9
+    let c = Math.floor(Math.random() * 8) + 2;   // 2–9
+
+    while (a === c) {
+      c = Math.floor(Math.random() * 8) + 2;
+    }
+
+    let x = Math.floor(Math.random() * 12) + 1;  // x ENTERA garantizada
+
+    // Construimos la ecuación para que dé esa x EXACTA:
+    // ax - b = cx + d  →  d = ax - b - cx
+    let b = Math.floor(Math.random() * 10) + 1;   // 1–10
+    let d = a * x - b - c * x;
+
+    solucionCorrecta = x;
+
+    document.getElementById("ecuAv-texto").textContent =
+      `${a}x - ${b} = ${c}x + ${d}`;
+
+    const res = document.getElementById("ecuAv-resultado");
+    res.textContent = "";
+    res.className = "game-result";
+
+    generarOpcionesEcuAv(solucionCorrecta);
+  }
+
+  function generarOpcionesEcuAv(correcta) {
+    const cont = document.getElementById("ecuAv-opciones");
+    cont.innerHTML = "";
+
+    const opciones = new Set([correcta]);
+
+    while (opciones.size < 4) {
+      opciones.add(correcta + Math.floor(Math.random() * 11) - 5);
+    }
+
+    const mezcladas = Array.from(opciones).sort(() => Math.random() - 0.5);
+
+    mezcladas.forEach(num => {
+      const btn = document.createElement("button");
+      btn.className = "game-option";
+      btn.textContent = num;
+      btn.onclick = () => evaluarEcuAv(num);
+      cont.appendChild(btn);
+    });
+  }
+
+  function evaluarEcuAv(num) {
+    const res = document.getElementById("ecuAv-resultado");
+
+    if (num === solucionCorrecta) {
+      res.textContent = "¡Correcto! 🎉";
+      res.className = "game-result ok";
+
+      if (typeof sumarEstrella === "function") {
+        sumarEstrella("nivel3_ecuaciones_avanzadas");
+      }
+
+      popupEstrella();
+
+    } else {
+      res.textContent = "Incorrecto ❌";
+      res.className = "game-result bad";
+    }
+  }
+
+  nuevaEcuacionAv();
+</script>
+
+</body>
+</html>
