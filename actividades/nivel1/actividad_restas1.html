@@ -17,7 +17,7 @@
       </div>
       <div class="nav-links">
         <a href="../../nivel1.html">Volver al nivel 1</a>
-        <a href="../../logros.html">Logros ⭐</a>
+        <a href="../../logros.html">Logros</a>
       </div>
     </nav>
   </header>
@@ -74,10 +74,10 @@
     MatePlay · Actividad de Restas · 2025
   </footer>
 
-  <!-- ⭐ SISTEMA DE LOGROS -->
+  <!-- SISTEMA DE LOGROS -->
   <script src="../../js/logros.js"></script>
 
-  <!-- ⭐ POPUP BONITO -->
+  <!-- POPUP BONITO -->
   <script>
     function popupEstrella() {
       let pop = document.createElement("div");
@@ -103,7 +103,7 @@
     }
   </script>
 
-  <!-- ⭐ SCRIPT DE LA ACTIVIDAD -->
+  <!-- SCRIPT DE LA ACTIVIDAD -->
   <script>
     let restaCorrecta = 0;
 
@@ -152,7 +152,7 @@
         texto.textContent = "¡Correcto! 🎉";
         texto.className = "game-result ok";
 
-        // ⭐ LOGRO DE NIVEL 1 · RESTAS
+        // LOGRO DE NIVEL 1 · RESTAS
         if (typeof sumarEstrella === "function") {
           sumarEstrella("logro_n1_restas");
         }

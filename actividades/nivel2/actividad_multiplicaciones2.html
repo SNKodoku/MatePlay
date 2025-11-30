@@ -81,10 +81,10 @@
     MatePlay · Actividad de Multiplicaciones · 2025
   </footer>
 
-  <!-- ⭐ CONECTAR SISTEMA DE LOGROS -->
+  <!-- CONECTAR SISTEMA DE LOGROS -->
   <script src="../../js/logros.js"></script>
 
-  <!-- ⭐ POPUP -->
+  <!-- POPUP -->
   <script>
     function popupEstrella() {
       let pop = document.createElement("div");
@@ -110,7 +110,7 @@
     }
   </script>
 
-  <!-- ⭐ SCRIPT DEL JUEGO -->
+  <!-- SCRIPT DEL JUEGO -->
   <script>
     let multiCorrecta = 0;
 
@@ -156,7 +156,7 @@
         res.textContent = "¡Correcto! 🎉";
         res.className = "game-result ok";
 
-        // ⭐ SUMAR ESTRELLA
+        // SUMAR ESTRELLA
         if (typeof sumarEstrella === "function") {
           sumarEstrella("logro_n2_multiplicaciones");
         }

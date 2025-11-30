@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <link rel="stylesheet" href="../../css/style.css">
 
-  <!-- ⭐ SISTEMA DE LOGROS -->
+  <!-- SISTEMA DE LOGROS -->
   <script src="../../js/logros.js"></script>
 </head>
 
@@ -84,11 +84,11 @@
   MatePlay · Funciones Lineales · 2025
 </footer>
 
-<!-- ⭐ POPUP ESTRELLA -->
+<!-- POPUP ESTRELLA -->
 <script>
   function popupEstrella() {
     let pop = document.createElement("div");
-    pop.textContent = "⭐ ¡Ganaste una estrella!";
+    pop.textContent = "¡Ganaste una estrella!";
     pop.style.position = "fixed";
     pop.style.bottom = "25px";
     pop.style.right = "25px";
@@ -188,7 +188,7 @@
       res.textContent = "¡Correcto! 🎉";
       res.className = "game-result ok";
 
-      // ⭐ GUARDAR LOGRO GLOBAL
+      // GUARDAR LOGRO GLOBAL
       if (typeof sumarEstrella === "function") {
         sumarEstrella("nivel3_funcionesLineales");
       }

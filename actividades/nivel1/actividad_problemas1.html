@@ -17,7 +17,7 @@
       </div>
       <div class="nav-links">
         <a href="../../nivel1.html">Volver al Nivel 1</a>
-        <a href="../../logros.html">Logros ⭐</a>
+        <a href="../../logros.html">Logros</a>
       </div>
     </nav>
   </header>
@@ -80,10 +80,10 @@
   </footer>
 
 
-  <!-- ⭐ SISTEMA DE LOGROS -->
+  <!-- SISTEMA DE LOGROS -->
   <script src="../../js/logros.js"></script>
 
-  <!-- ⭐ POPUP ESTRELLA -->
+  <!-- POPUP ESTRELLA -->
   <script>
     function popupEstrella() {
       let pop = document.createElement("div");
@@ -110,7 +110,7 @@
     }
   </script>
 
-  <!-- ⭐ SCRIPT PRINCIPAL -->
+  <!-- SCRIPT PRINCIPAL -->
   <script>
     const problemas = [
       {
@@ -179,7 +179,7 @@
         res.textContent = "¡Correcto! 🎉";
         res.className = "game-result ok";
 
-        // ⭐ MARCAR LOGRO ★★★
+        // MARCAR LOGRO ★★★
         if (typeof sumarEstrella === "function") {
           sumarEstrella("logro_n1_problemas");
         }
